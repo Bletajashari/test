@@ -118,6 +118,45 @@
   #dash-root .sp-rules b { font-weight: 600; }
   #dash-root .sp-fail { display: flex; align-items: center; justify-content: center; gap: .5rem; min-height: inherit; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); padding: var(--cds-pad-md); text-align: center; }
   #dash-root .sp-fail::before { content: ""; width: .375rem; height: .375rem; border-radius: 50%; background: var(--color-bad); flex: none; }
+  /* colour layer */
+  #dash-root .sp-hero { background: linear-gradient(115deg, color-mix(in srgb, var(--sp-c0) 18%, var(--color-panel)) 0%, color-mix(in srgb, var(--sp-c2) 12%, var(--color-panel)) 50%, color-mix(in srgb, var(--sp-c4) 16%, var(--color-panel)) 100%); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: grid; gap: var(--cds-gap-sm); }
+  #dash-root .sp-kpi { border-top: 3px solid var(--kpi, var(--sp-accent)); background: color-mix(in srgb, var(--kpi, var(--sp-accent)) 8%, var(--color-panel)); }
+  #dash-root .sp-kpi .sp-kpi-value { color: color-mix(in srgb, var(--kpi, var(--color-fg)) 70%, var(--color-fg)); }
+  #dash-root .sp-kpi.is-alert { --kpi: var(--color-bad); }
+  #dash-root .sp-kpi.is-warn { --kpi: var(--color-warn); }
+  #dash-root .sp-sprint { border-top: 4px solid var(--card, var(--sp-accent)); }
+  #dash-root .sp-sprint .sp-meter > span { background: linear-gradient(90deg, var(--sp-c0), var(--sp-c2)); }
+  #dash-root .sp-ava { width: 1.7rem; height: 1.7rem; border-radius: 50%; display: inline-grid; place-items: center; font-size: 11px; font-weight: 600; color: var(--color-bg); background: var(--ava, var(--sp-accent)); flex: none; letter-spacing: .02em; }
+  #dash-root .sp-who { display: inline-flex; align-items: center; gap: .5rem; white-space: nowrap; }
+  #dash-root .sp-hbar i { background: var(--bar, var(--sp-accent)); }
+  #dash-root .sp-donut-row { display: grid; grid-template-columns: minmax(9rem, 11rem) minmax(0, 1fr); gap: var(--cds-gap-md); align-items: center; }
+  #dash-root .sp-donut { position: relative; min-height: 10rem; }
+  #dash-root .sp-donut svg { display: block; width: 100%; height: auto; }
+  #dash-root .sp-donut-legend { display: flex; flex-wrap: wrap; gap: .25rem .8rem; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  #dash-root .sp-donut-legend span::before { content: ""; display: inline-block; width: .6rem; height: .6rem; border-radius: 50%; margin-right: .3rem; background: var(--sw); }
+  #dash-root .sp-pipe { display: flex; height: 2.6rem; border-radius: var(--cds-radius); overflow: hidden; gap: 3px; min-height: 2.6rem; }
+  #dash-root .sp-pipe > div { background: var(--seg); display: flex; align-items: center; justify-content: center; color: var(--color-bg); font-weight: 600; font-variant-numeric: tabular-nums; font-size: var(--cds-font-size-body); min-width: 2rem; cursor: pointer; transition: filter var(--cds-dur-slow); }
+  #dash-root .sp-pipe > div:hover { filter: brightness(1.08); }
+  #dash-root .sp-pipe > div[aria-pressed="true"] { box-shadow: inset 0 0 0 3px var(--color-fg); }
+  #dash-root .sp-reporters { display: grid; gap: var(--cds-gap-sm); }
+  #dash-root .sp-rep { border: 1px solid var(--color-border-line); border-left: 4px solid var(--ava); border-radius: var(--cds-radius); background: var(--color-bg); }
+  #dash-root .sp-rep > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(6rem, 14rem) auto; gap: var(--cds-gap-md); align-items: center; padding: var(--cds-pad-sm) var(--cds-pad-md); }
+  #dash-root .sp-rep > summary::-webkit-details-marker { display: none; }
+  #dash-root .sp-rep > summary:focus-visible { outline: 2px solid var(--sp-accent); outline-offset: -2px; }
+  #dash-root .sp-rep-name { font-weight: var(--cds-font-weight-medium); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #dash-root .sp-rep-name small { display: block; font-weight: 400; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  #dash-root .sp-stack { display: flex; height: 10px; border-radius: 999px; overflow: hidden; background: color-mix(in srgb, var(--color-fg) 8%, transparent); }
+  #dash-root .sp-stack > i { display: block; height: 100%; background: var(--seg); }
+  #dash-root .sp-rep-figs { display: flex; align-items: center; gap: .5rem; font-variant-numeric: tabular-nums; }
+  #dash-root .sp-rep-figs b { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: 1.35rem; }
+  #dash-root .sp-idle { font-size: var(--cds-font-size-caption); border-radius: 999px; padding: 0 .5em; background: color-mix(in srgb, var(--color-warn) 18%, transparent); color: var(--color-fg); }
+  #dash-root .sp-rep-body { padding: 0 var(--cds-pad-md) var(--cds-pad-md); }
+  #dash-root .sp-rep-body .sp-tablewrap { max-height: 22rem; }
+  @media (max-width: 560px) {
+    #dash-root .sp-donut-row { grid-template-columns: 1fr; }
+    #dash-root .sp-rep > summary { grid-template-columns: auto minmax(0, 1fr) auto; }
+    #dash-root .sp-rep > summary .sp-stack { display: none; }
+  }
   #dash-root [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
   #dash-root [data-dash-source-state=empty] { color: transparent; }
   @media (prefers-reduced-motion: no-preference) {
@@ -132,13 +171,16 @@
 
 <div class="sp" id="sprint-pulse">
   <header class="sp-head" id="overview">
+   <div class="sp-hero">
     <div class="sp-titlebar">
       <h1 class="sp-title">Sprint Pulse</h1>
       <span class="sp-scope">Prod board 1282 · IP, IR and CR tickets · live from Jira</span>
     </div>
     <p class="sp-takeaway dash-skeleton" id="takeaway">—</p>
+   </div>
     <nav class="sp-tabs" role="tablist" aria-label="Dashboard sections">
       <button class="sp-tab" role="tab" id="tab-sprints" data-tab="sprints" aria-controls="sprints" aria-selected="true">Sprints</button>
+      <button class="sp-tab" role="tab" id="tab-testing" data-tab="testing" aria-controls="testing" aria-selected="false">In testing</button>
       <button class="sp-tab" role="tab" id="tab-risk" data-tab="risk" aria-controls="risk" aria-selected="false">Backlog risk <span class="sp-badge" id="tab-risk-badge" data-source="risk_summary" data-field="intervene" data-row="0" hidden>—</span></button>
     </nav>
   </header>
@@ -154,11 +196,15 @@
       <article class="sp-card" id="sprint-summary">
         <h2 id="sprint-summary-title">Selected sprint</h2>
         <p class="sp-note" id="sprint-summary-note">—</p>
-        <div class="sp-inner-kpis" id="sprint-kpis"></div>
+        <div class="sp-donut-row">
+          <div class="sp-donut" id="sprint-donut" data-source="status_counts"></div>
+          <div class="sp-inner-kpis" id="sprint-kpis"></div>
+        </div>
+        <div class="sp-donut-legend" id="sprint-donut-legend"></div>
       </article>
       <article class="sp-card" id="closed-chart-card">
         <h2>Tickets closed per sprint</h2>
-        <p class="sp-note">Last 12 dated sprints, oldest to newest. Hover for detail, click a bar to open that sprint.</p>
+        <p class="sp-note">Last 12 dated sprints, oldest to newest. Closed = Done, Ready for Test, Testing, Needs Client Test or Ready for Promotion. Hover for detail, click a bar to open that sprint.</p>
         <div class="sp-legend" id="closed-legend"></div>
         <div class="sp-chart" id="closed-chart" data-source="sprints"></div>
       </article>
@@ -166,7 +212,7 @@
 
     <article class="sp-card" id="dev-card">
       <h2 id="dev-title">Developers in this sprint</h2>
-      <p class="sp-note">Closed = tickets assigned to them that reached Done in this sprint (Cancelled is not counted). Hours = their Jira worklogs dated inside the sprint window, on any board ticket.</p>
+      <p class="sp-note">Closed = their tickets in Done, Ready for Test, Testing, Needs Client Test or Ready for Promotion (Cancelled is not counted). Hours = their Jira worklogs dated inside the sprint window, on any board ticket.</p>
       <div class="sp-tablewrap" style="max-height: 26rem;">
         <table class="sp-table" id="dev-table" data-source="dev_sprint" data-row-key="sprint_id,developer">
           <thead><tr>
@@ -200,10 +246,38 @@
     </article>
   </section>
 
+  <!-- ============ IN TESTING ============ -->
+  <section class="sp-page" id="testing" role="tabpanel" aria-labelledby="tab-testing" hidden>
+    <div class="sp-kpis" id="testing-kpis"></div>
+
+    <article class="sp-card" id="testing-pipeline">
+      <h2>Testing pipeline</h2>
+      <p class="sp-note">Every open IP, IR and CR ticket waiting in a testing status, wherever it sits. Click a segment to show only that status below.</p>
+      <div class="sp-pipe" id="testing-pipe" data-source="testing_status"></div>
+      <div class="sp-donut-legend" id="testing-legend"></div>
+    </article>
+
+    <article class="sp-card" id="reporter-chart-card">
+      <h2>Tickets in testing, by reporter</h2>
+      <p class="sp-note">The 15 reporters with the most tickets waiting, split by status. Click a bar to jump to that reporter's tickets.</p>
+      <div class="sp-chart" id="reporter-chart" data-source="testing_reporters"></div>
+    </article>
+
+    <article class="sp-card" id="reporter-groups">
+      <h2>Reporters and their tickets</h2>
+      <p class="sp-note">Open a reporter to see their tickets. The amber tag counts tickets with no update in 60+ days.</p>
+      <div class="sp-toolbar">
+        <div class="sp-chips" id="testing-chips" role="group" aria-label="Filter by testing status"></div>
+        <input class="sp-search" id="testing-search" type="search" placeholder="Search reporter or ticket" aria-label="Search tickets in testing">
+      </div>
+      <div class="sp-reporters" id="reporter-list"></div>
+    </article>
+  </section>
+
   <!-- ============ BACKLOG RISK ============ -->
   <section class="sp-page" id="risk" role="tabpanel" aria-labelledby="tab-risk" hidden>
     <div class="sp-kpis" id="risk-kpis">
-      <div class="sp-kpi"><span class="sp-kpi-label">Open tickets</span><span class="sp-kpi-value dash-skeleton" data-source="risk_summary" data-field="open" data-row="0">—</span><span class="sp-kpi-sub">IP, IR and CR, not Done</span></div>
+      <div class="sp-kpi"><span class="sp-kpi-label">Open tickets</span><span class="sp-kpi-value dash-skeleton" data-source="risk_summary" data-field="open" data-row="0">—</span><span class="sp-kpi-sub">IP, IR and CR, not Done or in testing</span></div>
       <div class="sp-kpi is-alert"><span class="sp-kpi-label">Need management action</span><span class="sp-kpi-value dash-skeleton" data-source="risk_summary" data-field="intervene" data-row="0">—</span><button class="sp-kpi-link" data-flag="intervene">Show them</button></div>
       <div class="sp-kpi is-warn"><span class="sp-kpi-label">No update in 60+ days</span><span class="sp-kpi-value dash-skeleton" data-source="risk_summary" data-field="stale" data-row="0">—</span><button class="sp-kpi-link" data-flag="stale">Show them</button></div>
       <div class="sp-kpi is-warn"><span class="sp-kpi-label">High priority and blocked</span><span class="sp-kpi-value dash-skeleton" data-source="risk_summary" data-field="high_blocked" data-row="0">—</span><button class="sp-kpi-link" data-flag="blocked_hp">Show them</button></div>
@@ -217,6 +291,12 @@
       </div>
       <p class="sp-note">The 5–10 open tickets most likely to blow up, ranked by risk score. It is recalculated from Jira every time the page opens, so it changes as tickets move. Red edge: needs management action now. Amber edge: highest-risk of the rest, keep watching.</p>
       <ol class="sp-watch-list" id="watch-list" data-source="watchlist"></ol>
+    </article>
+
+    <article class="sp-card" id="owner-chart-card">
+      <h2>Flagged tickets by owner</h2>
+      <p class="sp-note">The 10 assignees holding the most flagged tickets. Red: needs management action. Amber: other risk signals.</p>
+      <div class="sp-chart" id="owner-chart" data-source="risk"></div>
     </article>
 
     <article class="sp-card" id="flagged">
@@ -407,6 +487,44 @@
     },
   });
 
+  dash.loader('testing', {
+    description: 'Follows Jira search pages (up to 10) and makes one row per ticket waiting in a testing status, with its reporter.',
+    fn: async ({ answer, call, args }) => {
+      const parse = (a) => { if (typeof a !== 'string') return a; try { return JSON.parse(a); } catch (e) { throw new Error(a); } };
+      let page = parse(answer);
+      if (!page || !page.issues) throw new Error((page && (page.message || page.error)) || 'Jira did not return an issues list');
+      const nodes = [...(page.issues.nodes || [])];
+      let pages = 1;
+      while (page.issues.pageInfo && page.issues.pageInfo.hasNextPage && pages < 10) {
+        page = parse(await call('searchJiraIssuesUsingJql', { ...args, nextPageToken: page.issues.pageInfo.endCursor }));
+        if (!page || !page.issues) throw new Error((page && (page.message || page.error)) || 'Jira stopped returning pages');
+        nodes.push(...(page.issues.nodes || []));
+        pages += 1;
+      }
+      const rows = nodes.map((n) => {
+        const f = n.fields || {};
+        const sp = (f.customfield_10021 || []).slice().sort((a, b) => String(a.startDate || '').localeCompare(String(b.startDate || ''))).pop() || {};
+        return {
+          key: n.key,
+          summary: f.summary || '',
+          project: String(n.key).split('-')[0],
+          status: (f.status && f.status.name) || '',
+          reporter: (f.reporter && f.reporter.displayName) || 'No reporter',
+          assignee: (f.assignee && f.assignee.displayName) || 'Unassigned',
+          priority: (f.priority && f.priority.name) || '',
+          created: f.created ? String(f.created).slice(0, 10) : null,
+          updated: f.updated ? String(f.updated).slice(0, 10) : null,
+          sprint: sp.name || '',
+        };
+      });
+      return {
+        columns: ['key', 'summary', 'project', 'status', 'reporter', 'assignee', 'priority', 'created', 'updated', 'sprint'],
+        rows,
+        cut: !!(page.issues.pageInfo && page.issues.pageInfo.hasNextPage),
+      };
+    },
+  });
+
   /* ---------- calculations ---------- */
   dash.calc('board_tickets', {
     title: 'Prod board tickets',
@@ -417,9 +535,10 @@
 
   dash.calc('sprints', {
     title: 'Sprint totals',
-    description: 'Per sprint: tickets, closed (Done, not Cancelled), still open, and hours from worklogs dated inside the sprint window. Newest first.',
+    description: 'Per sprint: tickets, closed (Done or any testing/promotion status), still open (not closed, not Cancelled), and hours from worklogs dated inside the sprint window. Newest first.',
     inputs: ['board_tickets', 'worklogs'],
     fn: (board_tickets, worklogs) => {
+      const CLOSED = ['Done', 'Ready for Test', 'Ready to Test', 'Testing', 'Needs Client Test', 'Ready for Promotion'];
       const keys = new Set(board_tickets.map((t) => t.key));
       const by = new Map();
       for (const t of board_tickets) {
@@ -430,8 +549,8 @@
           by.set(t.sprint_id, s);
         }
         s.tickets += 1;
-        if (t.category === 'done' && t.status !== 'Cancelled') s.closed += 1;
-        if (t.category !== 'done') s.open += 1;
+        if (CLOSED.includes(t.status)) s.closed += 1;
+        else if (t.status !== 'Cancelled') s.open += 1;
       }
       const list = [...by.values()];
       for (const w of worklogs) {
@@ -448,6 +567,7 @@
     description: 'Per sprint and person: tickets assigned, tickets closed, and hours they logged inside the sprint window.',
     inputs: ['board_tickets', 'worklogs', 'sprints'],
     fn: (board_tickets, worklogs, sprints) => {
+      const CLOSED = ['Done', 'Ready for Test', 'Ready to Test', 'Testing', 'Needs Client Test', 'Ready for Promotion'];
       const keys = new Set(board_tickets.map((t) => t.key));
       const rows = new Map();
       const get = (sid, dev) => {
@@ -460,7 +580,7 @@
         if (t.sprint_id == null) continue;
         const r = get(t.sprint_id, t.assignee);
         r.tickets += 1;
-        if (t.category === 'done' && t.status !== 'Cancelled') r.closed += 1;
+        if (CLOSED.includes(t.status)) r.closed += 1;
       }
       for (const w of worklogs) {
         if (!keys.has(w.key)) continue;
@@ -485,19 +605,21 @@
         r.n += 1;
         m.set(k, r);
       }
-      const order = { new: 0, indeterminate: 1, done: 2 };
-      return [...m.values()].sort((a, b) => (order[a.category] ?? 1) - (order[b.category] ?? 1) || b.n - a.n);
+      const CLOSED = ['Done', 'Ready for Test', 'Ready to Test', 'Testing', 'Needs Client Test', 'Ready for Promotion'];
+      const rank = (r) => (r.status === 'Cancelled' ? 3 : r.status === 'Done' ? 2 : CLOSED.includes(r.status) ? 1 : 0);
+      return [...m.values()].sort((a, b) => rank(a) - rank(b) || b.n - a.n);
     },
   });
 
   dash.calc('risk', {
     title: 'Backlog risk scores',
-    description: 'Scores every open ticket on staleness, priority, open blockers, financial impact and missing owner; keeps those with any signal.',
+    description: 'Scores every open ticket not yet in a testing status on staleness, priority, open blockers, financial impact and missing owner; keeps those with any signal.',
     inputs: ['backlog', 'stale'],
     fn: (backlog, stale) => {
+      const TESTING = ['Ready for Test', 'Ready to Test', 'Testing', 'Needs Client Test', 'Ready for Promotion'];
       const FIN = /invoic|billing|\bbill(s|ed)?\b|financ|payment|payroll|revenue|\btax|\bvat\b|credit note|purchase order|\bpo\b|rate card|timesheet|accrual|remittance|funding/i;
       const staleKeys = new Set(stale.map((s) => s.key));
-      return backlog.map((t) => {
+      return backlog.filter((t) => !TESTING.includes(t.status)).map((t) => {
         const isStale = staleKeys.has(t.key);
         const hi = t.priority === 'Highest' ? 3 : t.priority === 'High' ? 2 : 0;
         const blocked = t.blockers > 0 || t.status === 'Blocked';
@@ -522,10 +644,10 @@
 
   dash.calc('risk_summary', {
     title: 'Backlog risk totals',
-    description: 'Open tickets, and how many carry each risk signal.',
+    description: 'Open tickets not yet in testing, and how many carry each risk signal.',
     inputs: ['backlog', 'risk'],
     fn: (backlog, risk) => [{
-      open: backlog.length,
+      open: backlog.filter((t) => !['Ready for Test', 'Ready to Test', 'Testing', 'Needs Client Test', 'Ready for Promotion'].includes(t.status)).length,
       intervene: risk.filter((r) => r.intervene === 'Yes').length,
       stale: risk.filter((r) => r.stale === 'Yes').length,
       high_blocked: risk.filter((r) => r.blocked_hp === 'Yes').length,
@@ -544,13 +666,54 @@
     },
   });
 
+  dash.calc('testing_reporters', {
+    title: 'Testing tickets by reporter',
+    description: 'Per reporter: tickets waiting in each testing status, and how many have had no update in 60+ days.',
+    inputs: ['testing', 'stale'],
+    fn: (testing, stale) => {
+      const staleKeys = new Set(stale.map((s) => s.key));
+      const m = new Map();
+      for (const t of testing) {
+        const r = m.get(t.reporter) || { reporter: t.reporter, total: 0, ready_for_test: 0, testing: 0, needs_client_test: 0, ready_for_promotion: 0, other: 0, idle60: 0 };
+        r.total += 1;
+        const col = { 'Ready for Test': 'ready_for_test', 'Ready to Test': 'ready_for_test', Testing: 'testing', 'Needs Client Test': 'needs_client_test', 'Ready for Promotion': 'ready_for_promotion' }[t.status] || 'other';
+        r[col] += 1;
+        if (staleKeys.has(t.key)) r.idle60 += 1;
+        m.set(t.reporter, r);
+      }
+      return [...m.values()].sort((a, b) => b.total - a.total || a.reporter.localeCompare(b.reporter));
+    },
+  });
+
+  dash.calc('testing_status', {
+    title: 'Testing tickets by status',
+    description: 'How many tickets sit in each testing status right now.',
+    inputs: ['testing'],
+    fn: (testing) => {
+      const ORDER = ['Ready for Test', 'Ready to Test', 'Testing', 'Needs Client Test', 'Ready for Promotion'];
+      const m = new Map();
+      for (const t of testing) m.set(t.status, (m.get(t.status) || 0) + 1);
+      return [...m.entries()].map(([status, n]) => ({ status, n })).sort((a, b) => ORDER.indexOf(a.status) - ORDER.indexOf(b.status));
+    },
+  });
+
+  dash.calc('testing_total', {
+    title: 'Testing totals',
+    description: 'Tickets in testing, how many have had no update in 60+ days, and how many reporters they come from.',
+    inputs: ['testing', 'stale'],
+    fn: (testing, stale) => {
+      const staleKeys = new Set(stale.map((s) => s.key));
+      return [{ total: testing.length, idle60: testing.filter((t) => staleKeys.has(t.key)).length, reporters: new Set(testing.map((t) => t.reporter)).size }];
+    },
+  });
+
   /* ---------- page ---------- */
   (() => {
     const BOARD_URL = 'https://megatron.atlassian.net/browse/';
     const $ = (s) => document.querySelector(s);
     const root = $('#sprint-pulse');
     const enc = encodeURIComponent;
-    const st = { tab: 'sprints', sprint: null, status: null, flag: 'intervene', q: '', sort: 'score', dir: 'desc' };
+    const st = { tab: 'sprints', sprint: null, status: null, flag: 'intervene', q: '', sort: 'score', dir: 'desc', tstatus: null, tq: '', openRep: new Set(), repInit: false };
     const fmtDay = d3.utcFormat('%b %-d');
     const day = (s) => (s ? new Date(s + 'T00:00:00Z') : null);
     const today = d3.utcFormat('%Y-%m-%d')(new Date());
@@ -563,17 +726,30 @@
     const showFail = (box, msg) => { box.classList.remove('dash-skeleton'); box.replaceChildren(el('div', 'sp-fail', msg || 'Failed to load')); };
     const shortName = (n) => String(n || '').replace(/^prod\s*-\s*/i, '').replace(/^(January|February|March|April|May|June|July|August|September|October|November|December)/i, (m) => m.slice(0, 3));
     const range = (s) => (s.start && s.end ? fmtDay(day(s.start)) + ' – ' + fmtDay(day(s.end)) : 'No dates');
-    const catColor = (cat, status) => (status === 'Blocked' ? 'var(--color-bad)' : cat === 'done' ? 'var(--color-ok)' : cat === 'indeterminate' ? 'var(--sp-accent)' : 'var(--cds-chart-muted)');
+    const catColor = (cat, status) => statusColor(status);
     const prioColor = (p) => (p === 'Highest' ? 'var(--color-bad)' : p === 'High' ? 'var(--color-warn)' : p === 'Medium' ? 'var(--sp-accent)' : 'var(--cds-chart-muted)');
     const keyLink = (key) => { const a = el('a', null, key); a.href = BOARD_URL + key; a.target = '_blank'; a.rel = 'noopener'; return a; };
 
     root.style.setProperty('--sp-accent', dash.colors[0]);
+    dash.colors.forEach((c, i) => root.style.setProperty('--sp-c' + i, c));
+    const C = (i) => 'var(--sp-c' + (((i % 8) + 8) % 8) + ')';
+    const STATUS_COLOR = {
+      'To Do': 'var(--cds-chart-muted)', 'Needs Analysis': C(5), 'In Progress': C(0), 'Needs PM Review': C(4), Blocked: 'var(--color-bad)',
+      'Ready for Test': C(1), 'Ready to Test': C(1), Testing: C(2), 'Needs Client Test': C(3), 'Ready for Promotion': C(6),
+      Done: 'var(--color-ok)', Cancelled: 'var(--cds-chart-muted)',
+    };
+    const statusColor = (s) => STATUS_COLOR[s] || C(7);
+    const hashColor = (name) => { let h = 0; for (const ch of String(name)) h = (h * 31 + ch.charCodeAt(0)) | 0; return C(Math.abs(h)); };
+    const initials = (name) => String(name).split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase() || '?';
+    const who = (name) => { const w = el('span', 'sp-who'); const a = el('span', 'sp-ava', initials(name)); a.style.setProperty('--ava', name === 'Unassigned' || name === 'No reporter' ? 'var(--cds-chart-muted)' : hashColor(name)); a.setAttribute('aria-hidden', 'true'); w.append(a, el('span', null, name)); return w; };
+    const TESTING = ['Ready for Test', 'Ready to Test', 'Testing', 'Needs Client Test', 'Ready for Promotion'];
 
     /* tabs + links */
     const showTab = (name) => {
       st.tab = name;
       for (const b of document.querySelectorAll('#sprint-pulse .sp-tab')) b.setAttribute('aria-selected', String(b.dataset.tab === name));
       $('#sprints').hidden = name !== 'sprints';
+      $('#testing').hidden = name !== 'testing';
       $('#risk').hidden = name !== 'risk';
       dash.setLink(name);
       draw();
@@ -602,8 +778,9 @@
     function drawStrip(sprints) {
       const strip = $('#sprint-strip');
       strip.replaceChildren();
-      for (const s of sprints) {
+      for (const [i, s] of sprints.entries()) {
         const b = el('button', 'sp-sprint');
+        b.style.setProperty('--card', C(i));
         b.type = 'button';
         b.setAttribute('aria-pressed', String(s.sprint_id === st.sprint));
         const w = 'sprint_id=' + enc(s.sprint_id);
@@ -630,19 +807,39 @@
       $('#sprint-summary-title').textContent = s.sprint;
       $('#sprint-summary-note').textContent = range(s) + (s.start && s.start <= today && s.end && today <= s.end ? ' · in progress' : s.end && s.end < today ? ' · finished' : ' · upcoming');
       const w = 'sprint_id=' + enc(s.sprint_id);
-      const tile = (label, field, sub, cls) => {
+      const tile = (label, field, sub, cls, color) => {
         const k = el('div', 'sp-kpi' + (cls ? ' ' + cls : ''));
+        if (color) k.style.setProperty('--kpi', color);
         k.append(el('span', 'sp-kpi-label', label), mark(el('span', 'sp-kpi-value', String(s[field])), 'sprints', field, w));
         if (sub) k.append(el('span', 'sp-kpi-sub', sub));
         return k;
       };
       const people = devRows.filter((r) => r.developer !== 'Unassigned').length;
       $('#sprint-kpis').replaceChildren(
-        tile('Tickets closed', 'closed', 'Done, not Cancelled'),
-        tile('Still open', 'open', 'not yet Done', s.open > 0 && s.end && s.end < today ? 'is-warn' : ''),
-        tile('Tickets in sprint', 'tickets', 'latest sprint on the ticket'),
-        tile('Hours logged', 'hours', people + (people === 1 ? ' person' : ' people') + ' involved'),
+        tile('Tickets closed', 'closed', 'Done or in testing', '', 'var(--color-ok)'),
+        tile('Still open', 'open', 'not yet in testing', s.open > 0 && s.end && s.end < today ? 'is-warn' : '', C(3)),
+        tile('Tickets in sprint', 'tickets', 'latest sprint on the ticket', '', C(0)),
+        tile('Hours logged', 'hours', people + (people === 1 ? ' person' : ' people') + ' involved', '', C(2)),
       );
+    }
+
+    function drawDonut(counts, s) {
+      const box = $('#sprint-donut');
+      box.replaceChildren();
+      const legend = $('#sprint-donut-legend');
+      legend.replaceChildren(...counts.map((c) => Object.assign(el('span', null, c.status + ' ' + c.n), { style: '--sw: ' + statusColor(c.status) })));
+      if (!counts.length) return;
+      const S = 160, R = S / 2, r = R * 0.62;
+      const svg = d3.select(box).append('svg').attr('viewBox', `0 0 ${S} ${S}`).attr('role', 'img').attr('aria-label', 'Status mix of the sprint');
+      const g = svg.append('g').attr('transform', `translate(${R},${R})`);
+      const arcs = d3.pie().sort(null).value((d) => d.n).padAngle(0.025)(counts);
+      g.selectAll('path').data(arcs).join('path').attr('d', d3.arc().innerRadius(r).outerRadius(R - 2).cornerRadius(3))
+        .style('fill', (d) => statusColor(d.data.status)).style('cursor', 'pointer')
+        .style('opacity', (d) => (!st.status || st.status === d.data.status ? 1 : 0.3))
+        .on('click', (ev, d) => { st.status = st.status === d.data.status ? null : d.data.status; draw(); })
+        .append('title').text((d) => d.data.status + ': ' + d.data.n);
+      g.append('text').attr('text-anchor', 'middle').attr('dy', '-0.05em').style('font-family', 'var(--font-anthropic-serif)').style('font-size', '30px').style('fill', 'var(--color-fg)').text(s.closed);
+      g.append('text').attr('text-anchor', 'middle').attr('dy', '1.6em').style('font-size', '11px').style('fill', 'var(--color-fg-muted)').text('of ' + s.tickets + ' closed');
     }
 
     function drawChart(sprints) {
@@ -651,39 +848,44 @@
       const data = sprints.filter((s) => s.start).slice(0, 12).reverse();
       box.replaceChildren();
       $('#closed-legend').replaceChildren(
-        Object.assign(el('span', null, 'Closed'), { style: '--sw: ' + dash.colors[0] }),
-        Object.assign(el('span', null, 'Tickets in sprint'), { style: '--sw: color-mix(in srgb, var(--color-fg) 12%, transparent)' }),
+        Object.assign(el('span', null, 'Closed'), { style: '--sw: var(--sp-c0)' }),
+        Object.assign(el('span', null, 'Still open'), { style: '--sw: var(--sp-c3)' }),
+        Object.assign(el('span', null, 'Selected sprint'), { style: '--sw: var(--color-fg)' }),
       );
       if (!data.length) { box.append(el('div', 'sp-empty', 'No dated sprints yet.')); return; }
       const W = box.clientWidth, H = 240, m = { t: 18, r: 8, b: 30, l: 30 };
       const x = d3.scaleBand(data.map((d) => d.sprint_id), [m.l, W - m.r]).padding(0.28);
-      const y = d3.scaleLinear([0, d3.max(data, (d) => d.tickets) || 1], [H - m.b, m.t]).nice();
+      const y = d3.scaleLinear([0, d3.max(data, (d) => d.closed + d.open) || 1], [H - m.b, m.t]).nice();
       const svg = d3.select(box).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Tickets closed per sprint');
+      const defs = svg.append('defs');
+      const grad = defs.append('linearGradient').attr('id', 'sp-closed-grad').attr('x1', 0).attr('x2', 0).attr('y1', 0).attr('y2', 1);
+      grad.append('stop').attr('offset', '0%').style('stop-color', dash.colors[2]);
+      grad.append('stop').attr('offset', '100%').style('stop-color', dash.colors[0]);
       svg.append('g').selectAll('line').data(y.ticks(4)).join('line')
-        .attr('x1', m.l).attr('x2', W - m.r).attr('y1', (d) => y(d)).attr('y2', (d) => y(d)).attr('stroke', 'var(--cds-chart-grid)');
+        .attr('x1', m.l).attr('x2', W - m.r).attr('y1', (d) => y(d)).attr('y2', (d) => y(d)).style('stroke', 'var(--cds-chart-grid)');
       svg.append('g').selectAll('text').data(y.ticks(4)).join('text')
         .attr('x', m.l - 6).attr('y', (d) => y(d)).attr('dy', '0.32em').attr('text-anchor', 'end')
-        .attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text(d3.format('d'));
+        .style('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text(d3.format('d'));
       const bw = Math.min(32, x.bandwidth());
       const g = svg.append('g').selectAll('g').data(data).join('g').attr('class', 'sp-bar')
         .attr('transform', (d) => `translate(${x(d.sprint_id) + (x.bandwidth() - bw) / 2},0)`);
-      g.append('rect').attr('width', bw).attr('y', (d) => y(d.tickets)).attr('height', (d) => y(0) - y(d.tickets)).attr('rx', 4)
-        .attr('fill', 'color-mix(in srgb, var(--color-fg) 12%, transparent)');
+      g.append('rect').attr('width', bw).attr('y', (d) => y(d.closed + d.open)).attr('height', (d) => y(d.closed) - y(d.closed + d.open)).attr('rx', 4)
+        .style('fill', 'var(--sp-c3)').style('opacity', (d) => (d.sprint_id === st.sprint ? 0.9 : 0.55));
       g.append('rect').attr('width', bw).attr('y', (d) => y(d.closed)).attr('height', (d) => y(0) - y(d.closed)).attr('rx', 4)
-        .attr('fill', (d) => (d.sprint_id === st.sprint ? dash.colors[0] : `color-mix(in srgb, ${dash.colors[0]} 70%, transparent)`))
-        .attr('stroke', (d) => (d.sprint_id === st.sprint ? 'var(--color-fg)' : 'none')).attr('stroke-width', 1.5);
-      g.append('text').attr('x', bw / 2).attr('y', (d) => y(d.closed) - 5).attr('text-anchor', 'middle')
-        .attr('fill', 'var(--color-fg)').style('font-size', 'var(--cds-font-size-caption)').style('font-variant-numeric', 'tabular-nums').text((d) => d.closed);
+        .style('fill', 'url(#sp-closed-grad)').style('opacity', (d) => (d.sprint_id === st.sprint ? 1 : 0.75))
+        .style('stroke', (d) => (d.sprint_id === st.sprint ? 'var(--color-fg)' : 'none')).attr('stroke-width', 1.5);
+      g.append('text').attr('x', bw / 2).attr('y', (d) => y(d.closed + d.open) - 5).attr('text-anchor', 'middle')
+        .style('fill', 'var(--color-fg)').style('font-size', 'var(--cds-font-size-caption)').style('font-variant-numeric', 'tabular-nums').text((d) => d.closed);
       const every = Math.ceil(data.length / Math.max(1, Math.floor((W - m.l - m.r) / 64)));
       svg.append('g').selectAll('text').data(data.filter((d, i) => (data.length - 1 - i) % every === 0)).join('text')
         .attr('x', (d) => x(d.sprint_id) + x.bandwidth() / 2).attr('y', H - m.b + 16).attr('text-anchor', 'middle')
-        .attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text((d) => shortName(d.sprint));
-      svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(0)).attr('y2', y(0)).attr('stroke', 'var(--cds-chart-axis)');
+        .style('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text((d) => shortName(d.sprint));
+      svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(0)).attr('y2', y(0)).style('stroke', 'var(--cds-chart-axis)');
       const tip = el('div', 'sp-tip');
       tip.hidden = true;
       box.append(tip);
       g.on('mousemove', (ev, d) => {
-        tip.replaceChildren(el('div', 'sp-tip-h', d.sprint + ' · ' + range(d)), el('div', null, d.closed + ' of ' + d.tickets + ' closed'), el('div', null, d.hours + ' h logged'));
+        tip.replaceChildren(el('div', 'sp-tip-h', d.sprint + ' · ' + range(d)), el('div', null, d.closed + ' closed · ' + d.open + ' still open'), el('div', null, d.hours + ' h logged'));
         tip.hidden = false;
         const [px, py] = d3.pointer(ev, box);
         const tw = tip.offsetWidth;
@@ -704,12 +906,15 @@
         const bar = el('div', 'sp-hbar');
         const i = el('i');
         i.style.width = (100 * r.hours) / maxH + '%';
+        i.style.setProperty('--bar', r.developer === 'Unassigned' ? 'var(--cds-chart-muted)' : hashColor(r.developer));
         if (!r.hours) i.style.opacity = '0';
         bar.append(el('div', null), el('span', null, String(r.hours)));
         bar.firstChild.append(i);
         const hc = el('td');
         hc.append(bar);
-        tr.append(el('td', null, r.developer), el('td', 'sp-num', String(r.tickets)), el('td', 'sp-num', String(r.closed)), hc);
+        const dc = el('td');
+        dc.append(who(r.developer));
+        tr.append(dc, el('td', 'sp-num', String(r.tickets)), el('td', 'sp-num', String(r.closed)), hc);
         tb.append(tr);
       }
     }
@@ -751,7 +956,9 @@
         const pr = el('span', 'sp-prio', t.priority);
         pr.style.setProperty('--prio', prioColor(t.priority));
         pc.append(pr);
-        tr.append(k, el('td', 'sp-sum', t.summary), sc, el('td', null, t.assignee), pc, el('td', 'sp-num sp-hide-narrow', String(t.hours)));
+        const ac = el('td');
+        ac.append(who(t.assignee));
+        tr.append(k, el('td', 'sp-sum', t.summary), sc, ac, pc, el('td', 'sp-num sp-hide-narrow', String(t.hours)));
         tb.append(tr);
       }
     }
@@ -777,6 +984,7 @@
       const tickets = ds('board_tickets').data.filter((t) => t.sprint_id === st.sprint && (!st.status || t.status === st.status));
       drawStrip(sprints);
       drawSummary(s, devRows);
+      drawDonut(counts, s);
       drawChart(sprints);
       $('#dev-title').textContent = 'Developers in ' + s.sprint;
       drawDevs(devRows);
@@ -874,6 +1082,7 @@
 
     function drawRisk() {
       drawWatch();
+      drawOwners();
       drawFlagChips();
       if (failed('backlog', 'stale', 'risk')) { const tb = $('#risk-table tbody'); const tr = el('tr'); const td = el('td'); td.colSpan = 7; td.append(el('div', 'sp-fail', 'Failed to load')); tr.append(td); tb.replaceChildren(tr); }
       drawRiskTable();
@@ -882,6 +1091,233 @@
         if (sum) { k.classList.remove('dash-skeleton'); k.textContent = String(sum[k.dataset.field]); }
         else if (failed('risk_summary', 'backlog', 'stale')) { k.classList.remove('dash-skeleton'); k.textContent = '—'; }
       }
+    }
+
+    /* ---------- testing tab ---------- */
+    function drawTestingKpis() {
+      const box = $('#testing-kpis');
+      if (failed('testing', 'stale', 'testing_status', 'testing_total')) { showFail(box); return; }
+      if (!ok('testing_status', 'testing_total')) { box.classList.add('dash-skeleton'); return; }
+      box.classList.remove('dash-skeleton');
+      const tot = ds('testing_total').data[0];
+      const tile = (label, value, src, field, where, row, color, sub, cls) => {
+        const k = el('div', 'sp-kpi' + (cls ? ' ' + cls : ''));
+        if (color) k.style.setProperty('--kpi', color);
+        const v = mark(el('span', 'sp-kpi-value', String(value)), src, field, where);
+        if (row != null) v.dataset.row = String(row);
+        k.append(el('span', 'sp-kpi-label', label), v);
+        if (sub) k.append(el('span', 'sp-kpi-sub', sub));
+        return k;
+      };
+      box.replaceChildren(
+        tile('Waiting in testing', tot.total, 'testing_total', 'total', null, 0, C(0), tot.reporters + ' reporters'),
+        ...ds('testing_status').data.map((r) => tile(r.status, r.n, 'testing_status', 'n', 'status=' + enc(r.status), null, statusColor(r.status))),
+        tile('No update in 60+ days', tot.idle60, 'testing_total', 'idle60', null, 0, null, 'still in testing', 'is-warn'),
+      );
+    }
+
+    function drawPipe() {
+      const box = $('#testing-pipe');
+      if (failed('testing', 'testing_status')) { showFail(box); return; }
+      if (!ok('testing_status')) { box.classList.add('dash-skeleton'); return; }
+      box.classList.remove('dash-skeleton');
+      const rows = ds('testing_status').data;
+      box.replaceChildren();
+      for (const r of rows) {
+        const seg = el('div', null, String(r.n));
+        seg.style.setProperty('--seg', statusColor(r.status));
+        seg.style.flex = String(r.n);
+        seg.title = r.status + ': ' + r.n;
+        seg.setAttribute('role', 'button');
+        seg.tabIndex = 0;
+        seg.setAttribute('aria-pressed', String(st.tstatus === r.status));
+        mark(seg, 'testing_status', 'n', 'status=' + enc(r.status));
+        const pick = () => { st.tstatus = st.tstatus === r.status ? null : r.status; drawTesting(); };
+        seg.addEventListener('click', pick);
+        seg.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });
+        box.append(seg);
+      }
+      $('#testing-legend').replaceChildren(...rows.map((r) => Object.assign(el('span', null, r.status), { style: '--sw: ' + statusColor(r.status) })));
+    }
+
+    const SEGS = [['ready_for_test', 'Ready for Test'], ['testing', 'Testing'], ['needs_client_test', 'Needs Client Test'], ['ready_for_promotion', 'Ready for Promotion']];
+
+    function drawReporterChart() {
+      const box = $('#reporter-chart');
+      if (box.clientWidth === 0) return;
+      if (failed('testing', 'stale', 'testing_reporters')) { showFail(box); return; }
+      if (!ok('testing_reporters')) { box.classList.add('dash-skeleton'); return; }
+      box.classList.remove('dash-skeleton');
+      box.replaceChildren();
+      const data = ds('testing_reporters').data.slice(0, 15);
+      if (!data.length) { box.append(el('div', 'sp-empty', 'No tickets are waiting in testing.')); return; }
+      const W = box.clientWidth, row = 26, m = { t: 4, r: 36, b: 8, l: Math.min(190, Math.max(90, W * 0.32)) };
+      const H = m.t + m.b + row * data.length;
+      box.style.minHeight = H + 'px';
+      const x = d3.scaleLinear([0, d3.max(data, (d) => d.total) || 1], [m.l, W - m.r]);
+      const y = d3.scaleBand(data.map((d) => d.reporter), [m.t, H - m.b]).padding(0.25);
+      const svg = d3.select(box).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Tickets in testing by reporter');
+      const stacks = [];
+      for (const d of data) {
+        let x0 = 0;
+        for (const [f, label] of SEGS) { if (d[f]) { stacks.push({ d, label, x0, x1: x0 + d[f] }); x0 += d[f]; } }
+        if (d.other) stacks.push({ d, label: 'Other', x0, x1: x0 + d.other });
+      }
+      const tip = el('div', 'sp-tip');
+      tip.hidden = true;
+      svg.append('g').selectAll('rect').data(stacks).join('rect')
+        .attr('x', (s) => x(s.x0)).attr('width', (s) => Math.max(0, x(s.x1) - x(s.x0) - 1.5)).attr('y', (s) => y(s.d.reporter)).attr('height', y.bandwidth()).attr('rx', 3)
+        .style('fill', (s) => statusColor(s.label)).style('cursor', 'pointer')
+        .style('opacity', (s) => (!st.tstatus || st.tstatus === s.label ? 1 : 0.25))
+        .on('mousemove', (ev, s) => {
+          tip.replaceChildren(el('div', 'sp-tip-h', s.d.reporter), el('div', null, s.label + ': ' + (s.x1 - s.x0)), el('div', null, s.d.total + ' in testing in total'));
+          tip.hidden = false;
+          const [px, py] = d3.pointer(ev, box);
+          tip.style.left = Math.max(0, Math.min(W - tip.offsetWidth, px + 12)) + 'px';
+          tip.style.top = Math.max(0, py - 56) + 'px';
+        })
+        .on('mouseleave', () => { tip.hidden = true; })
+        .on('click', (ev, s) => { st.openRep.add(s.d.reporter); drawTesting(); const t = document.getElementById('rep-' + enc(s.d.reporter).replace(/%/g, '_')); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+      svg.append('g').selectAll('text').data(data).join('text')
+        .attr('x', m.l - 8).attr('y', (d) => y(d.reporter) + y.bandwidth() / 2).attr('dy', '0.32em').attr('text-anchor', 'end')
+        .style('fill', 'var(--color-fg)').style('font-size', 'var(--cds-font-size-caption)')
+        .text((d) => (d.reporter.length > 26 ? d.reporter.slice(0, 25) + '…' : d.reporter));
+      svg.append('g').selectAll('text').data(data).join('text')
+        .attr('x', (d) => x(d.total) + 6).attr('y', (d) => y(d.reporter) + y.bandwidth() / 2).attr('dy', '0.32em')
+        .style('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').style('font-variant-numeric', 'tabular-nums').text((d) => d.total);
+      box.append(tip);
+    }
+
+    function drawTestingChips() {
+      const box = $('#testing-chips');
+      box.replaceChildren();
+      const rows = ok('testing_status') ? ds('testing_status').data : [];
+      const all = el('button', 'sp-chip');
+      all.type = 'button';
+      all.setAttribute('aria-pressed', String(!st.tstatus));
+      all.append(el('span', null, 'All testing statuses'));
+      all.addEventListener('click', () => { st.tstatus = null; drawTesting(); });
+      box.append(all);
+      for (const r of rows) {
+        const b = el('button', 'sp-chip');
+        b.type = 'button';
+        b.style.setProperty('--chip', statusColor(r.status));
+        b.setAttribute('aria-pressed', String(st.tstatus === r.status));
+        b.append(el('span', 'sp-dot'), el('span', null, r.status), mark(el('span', 'sp-count', String(r.n)), 'testing_status', 'n', 'status=' + enc(r.status)));
+        b.addEventListener('click', () => { st.tstatus = st.tstatus === r.status ? null : r.status; drawTesting(); });
+        box.append(b);
+      }
+    }
+
+    function drawReporters() {
+      const list = $('#reporter-list');
+      if (failed('testing', 'stale', 'testing_reporters')) { showFail(list); return; }
+      if (!ok('testing', 'testing_reporters')) { list.classList.add('dash-skeleton'); return; }
+      list.classList.remove('dash-skeleton');
+      const reps = ds('testing_reporters').data;
+      if (!st.repInit) { reps.slice(0, 2).forEach((r) => st.openRep.add(r.reporter)); st.repInit = true; }
+      const tickets = ds('testing').data.filter((t) => !st.tstatus || t.status === st.tstatus);
+      const byRep = d3.group(tickets, (t) => t.reporter);
+      list.replaceChildren();
+      let shown = 0;
+      for (const r of reps) {
+        let rows = byRep.get(r.reporter) || [];
+        if (st.tq) {
+          const repHit = r.reporter.toLowerCase().includes(st.tq);
+          if (!repHit) rows = rows.filter((t) => [t.key, t.summary, t.assignee, t.status].join(' ').toLowerCase().includes(st.tq));
+        }
+        if (!rows.length) continue;
+        shown += 1;
+        const w = 'reporter=' + enc(r.reporter);
+        const det = el('details', 'sp-rep');
+        det.id = 'rep-' + enc(r.reporter).replace(/%/g, '_');
+        det.style.setProperty('--ava', r.reporter === 'No reporter' ? 'var(--cds-chart-muted)' : hashColor(r.reporter));
+        det.open = st.openRep.has(r.reporter) || !!st.tq;
+        det.addEventListener('toggle', () => { if (det.open) st.openRep.add(r.reporter); else st.openRep.delete(r.reporter); });
+        const sum = el('summary');
+        const ava = el('span', 'sp-ava', initials(r.reporter));
+        const name = el('span', 'sp-rep-name', r.reporter);
+        const sub = el('small', null, SEGS.filter(([f]) => r[f]).map(([f, l]) => r[f] + ' ' + l).join(' · '));
+        name.append(sub);
+        const stack = el('div', 'sp-stack');
+        for (const [f, l] of SEGS) if (r[f]) { const i = el('i'); i.style.setProperty('--seg', statusColor(l)); i.style.flex = String(r[f]); stack.append(i); }
+        const figs = el('div', 'sp-rep-figs');
+        figs.append(mark(el('b', null, String(r.total)), 'testing_reporters', 'total', w));
+        if (r.idle60) { const idle = mark(el('span', 'sp-idle', String(r.idle60)), 'testing_reporters', 'idle60', w); idle.title = 'No update in 60+ days'; figs.append(idle); }
+        sum.append(ava, name, stack, figs);
+        const body = el('div', 'sp-rep-body');
+        const wrap = el('div', 'sp-tablewrap');
+        const table = el('table', 'sp-table');
+        table.dataset.source = 'testing';
+        table.dataset.rowKey = 'key';
+        const head = el('tr');
+        for (const [f, l, c] of [['key', 'Ticket'], ['summary', 'Summary'], ['status', 'Status'], ['assignee', 'Assignee', 'sp-hide-narrow'], ['priority', 'Priority', 'sp-hide-narrow'], ['updated', 'Last updated']]) {
+          const th = el('th', c || null, l);
+          th.dataset.field = f;
+          head.append(th);
+        }
+        const thead = el('thead');
+        thead.append(head);
+        const tb = el('tbody');
+        for (const t of rows.slice().sort((a, b) => String(a.updated).localeCompare(String(b.updated)))) {
+          const tr = el('tr');
+          const k = el('td');
+          k.append(keyLink(t.key));
+          const sc = el('td');
+          const pill = el('span', 'sp-pill', t.status);
+          pill.style.setProperty('--pill', statusColor(t.status));
+          sc.append(pill);
+          const ac = el('td', 'sp-hide-narrow');
+          ac.append(who(t.assignee));
+          const pc = el('td', 'sp-hide-narrow');
+          const pr = el('span', 'sp-prio', t.priority);
+          pr.style.setProperty('--prio', prioColor(t.priority));
+          pc.append(pr);
+          tr.append(k, el('td', 'sp-sum', t.summary), sc, ac, pc, el('td', null, t.updated));
+          tb.append(tr);
+        }
+        table.append(thead, tb);
+        wrap.append(table);
+        body.append(wrap);
+        det.append(sum, body);
+        list.append(det);
+      }
+      if (!shown) list.append(el('div', 'sp-empty', st.tq ? 'No reporter or ticket matches that search.' : 'No tickets in this status.'));
+    }
+
+    function drawTesting() {
+      drawTestingKpis();
+      drawPipe();
+      drawReporterChart();
+      drawTestingChips();
+      drawReporters();
+    }
+    $('#testing-search').addEventListener('input', (e) => { st.tq = e.target.value.trim().toLowerCase(); drawReporters(); });
+
+    function drawOwners() {
+      const box = $('#owner-chart');
+      if (box.clientWidth === 0) return;
+      if (failed('backlog', 'stale', 'risk')) { showFail(box); return; }
+      if (!ok('risk')) { box.classList.add('dash-skeleton'); return; }
+      box.classList.remove('dash-skeleton');
+      box.replaceChildren();
+      const groups = d3.rollups(ds('risk').data, (v) => ({ act: v.filter((r) => r.intervene === 'Yes').length, other: v.filter((r) => r.intervene !== 'Yes').length }), (r) => r.assignee)
+        .map(([name, v]) => ({ name, ...v, total: v.act + v.other })).sort((a, b) => b.act - a.act || b.total - a.total).slice(0, 10);
+      if (!groups.length) { box.append(el('div', 'sp-empty', 'No flagged tickets.')); return; }
+      const W = box.clientWidth, row = 26, m = { t: 4, r: 40, b: 8, l: Math.min(180, Math.max(90, W * 0.3)) };
+      const H = m.t + m.b + row * groups.length;
+      box.style.minHeight = H + 'px';
+      const x = d3.scaleLinear([0, d3.max(groups, (d) => d.total) || 1], [m.l, W - m.r]);
+      const y = d3.scaleBand(groups.map((d) => d.name), [m.t, H - m.b]).padding(0.25);
+      const svg = d3.select(box).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Flagged tickets by owner');
+      svg.append('g').selectAll('rect').data(groups).join('rect').attr('x', x(0)).attr('y', (d) => y(d.name)).attr('height', y.bandwidth()).attr('rx', 3)
+        .attr('width', (d) => Math.max(0, x(d.act) - x(0) - (d.act ? 1.5 : 0))).style('fill', 'var(--color-bad)');
+      svg.append('g').selectAll('rect').data(groups).join('rect').attr('x', (d) => x(d.act)).attr('y', (d) => y(d.name)).attr('height', y.bandwidth()).attr('rx', 3)
+        .attr('width', (d) => Math.max(0, x(d.total) - x(d.act))).style('fill', 'var(--color-warn)').style('opacity', 0.75);
+      svg.append('g').selectAll('text').data(groups).join('text').attr('x', m.l - 8).attr('y', (d) => y(d.name) + y.bandwidth() / 2).attr('dy', '0.32em').attr('text-anchor', 'end')
+        .style('fill', 'var(--color-fg)').style('font-size', 'var(--cds-font-size-caption)').text((d) => (d.name.length > 24 ? d.name.slice(0, 23) + '…' : d.name));
+      svg.append('g').selectAll('text').data(groups).join('text').attr('x', (d) => x(d.total) + 6).attr('y', (d) => y(d.name) + y.bandwidth() / 2).attr('dy', '0.32em')
+        .style('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').style('font-variant-numeric', 'tabular-nums').text((d) => d.act + ' / ' + d.total);
     }
 
     /* ---------- header ---------- */
@@ -910,16 +1346,23 @@
         n.dataset.source = 'risk_summary'; n.dataset.field = 'intervene'; n.dataset.row = '0';
         p.append(document.createTextNode(' On the backlog, '), n, document.createTextNode(sum.intervene === 1 ? ' ticket needs management action today.' : ' tickets need management action today.'));
       }
+      if (ok('testing_total')) {
+        const tt = ds('testing_total').data[0];
+        const n = el('b', null, String(tt.total));
+        n.dataset.source = 'testing_total'; n.dataset.field = 'total'; n.dataset.row = '0';
+        p.append(document.createTextNode(' '), n, document.createTextNode(' tickets are waiting in testing.'));
+      }
     }
 
     function draw() {
       drawHeader();
       if (st.tab === 'sprints') drawSprints();
+      else if (st.tab === 'testing') drawTesting();
       else drawRisk();
     }
 
     dash.onData(draw);
     const named = location.hash.slice(1);
-    if (named === 'risk' || named === 'sprints') showTab(named);
+    if (named === 'risk' || named === 'sprints' || named === 'testing') showTab(named);
   })();
 </script>

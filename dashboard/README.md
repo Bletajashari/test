@@ -16,8 +16,16 @@ Every viewer's browser queries Jira live through their own claude.ai **Atlassian
 | `worklogs` | same as above, `worklog` field only |
 | `backlog` | `project in (IP, IR, CR) AND statusCategory != Done` |
 | `stale` | `project in (IP, IR, CR) AND statusCategory != Done AND updated <= -60d` |
+| `testing` | `project in (IP, IR, CR) AND status in ("Ready for Test", "Ready to Test", "Testing", "Needs Client Test", "Ready for Promotion")` |
 
 The sprint field on this site is `customfield_10021`; tickets are kept when their latest sprint is on board 1282.
+
+## Definitions
+
+- **Closed** = status is Done, Ready for Test, Ready to Test, Testing, Needs Client Test or Ready for Promotion
+  (Cancelled is not counted as closed or open).
+- **In testing tab** = open tickets in any of those statuses except Done, grouped by reporter.
+- **Backlog risk** only scores open tickets that are not yet in a testing status.
 
 ## Risk score (Backlog risk tab)
 
