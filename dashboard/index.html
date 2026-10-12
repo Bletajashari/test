@@ -1,0 +1,925 @@
+<style>
+  #dash-root .sp { display: grid; gap: var(--cds-gap-lg); font-family: var(--font-anthropic-sans); color: var(--color-fg); min-width: 0; }
+  #dash-root .sp [hidden] { display: none !important; }
+  #dash-root .sp-head { display: grid; gap: var(--cds-gap-sm); }
+  #dash-root .sp-titlebar { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--cds-gap-sm) var(--cds-gap-md); }
+  #dash-root .sp-title { margin: 0; font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); line-height: 1.15; text-wrap: balance; }
+  #dash-root .sp-scope { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); letter-spacing: .02em; }
+  #dash-root .sp-takeaway { margin: 0; max-width: 72ch; font-size: var(--cds-font-size-body); line-height: 1.5; color: var(--color-fg); }
+  #dash-root .sp-takeaway b, #dash-root .sp b.sp-num { font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  #dash-root .sp-tabs { display: flex; gap: var(--cds-gap-xs); border-bottom: 1px solid var(--color-border-line); overflow-x: auto; }
+  #dash-root .sp-tab { appearance: none; border: 0; background: none; color: var(--color-fg-muted); font: inherit; font-size: var(--cds-font-size-body); padding: var(--cds-pad-sm) var(--cds-pad-md); border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer; display: inline-flex; align-items: center; gap: var(--cds-gap-xs); white-space: nowrap; }
+  #dash-root .sp-tab:hover { color: var(--color-fg); }
+  #dash-root .sp-tab[aria-selected="true"] { color: var(--color-fg); border-bottom-color: var(--sp-accent); font-weight: var(--cds-font-weight-medium); }
+  #dash-root .sp-tab:focus-visible, #dash-root .sp button:focus-visible, #dash-root .sp a:focus-visible, #dash-root .sp input:focus-visible { outline: 2px solid var(--sp-accent); outline-offset: 2px; border-radius: 4px; }
+  #dash-root .sp-badge { font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; background: color-mix(in srgb, var(--color-bad) 14%, transparent); color: var(--color-bad); border-radius: 999px; padding: 0 .5em; line-height: 1.6; }
+
+  #dash-root .sp-page { display: grid; gap: var(--cds-gap-lg); min-width: 0; }
+  #dash-root .sp-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: grid; gap: var(--cds-gap-md); min-width: 0; align-content: start; }
+  #dash-root .sp-card h2 { margin: 0; font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); text-wrap: balance; }
+  #dash-root .sp-note { margin: -.4rem 0 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); line-height: 1.45; }
+  #dash-root .sp-grid { display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
+  #dash-root .sp-section-label { margin: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); text-transform: uppercase; letter-spacing: .08em; }
+
+  /* sprint strip */
+  #dash-root .sp-strip { display: flex; gap: var(--cds-gap-sm); overflow-x: auto; padding-bottom: var(--cds-pad-xs); scroll-snap-type: x proximity; min-height: 7.5rem; }
+  #dash-root .sp-sprint { flex: 0 0 auto; width: 11.5rem; scroll-snap-align: start; text-align: left; font: inherit; color: inherit; background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-md); display: grid; gap: .35rem; cursor: pointer; transition: border-color var(--cds-dur-slow), background var(--cds-dur-slow); }
+  #dash-root .sp-sprint:hover { border-color: color-mix(in srgb, var(--sp-accent) 55%, var(--color-border-line)); }
+  #dash-root .sp-sprint[aria-pressed="true"] { border-color: var(--sp-accent); background: color-mix(in srgb, var(--sp-accent) 8%, var(--color-panel)); box-shadow: inset 0 0 0 1px var(--sp-accent); }
+  #dash-root .sp-sprint-top { display: flex; justify-content: space-between; align-items: center; gap: .4rem; }
+  #dash-root .sp-sprint-name { font-weight: var(--cds-font-weight-medium); font-size: var(--cds-font-size-body); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #dash-root .sp-now { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--sp-accent); border: 1px solid currentColor; border-radius: 999px; padding: 0 .45em; line-height: 1.5; flex: none; }
+  #dash-root .sp-sprint-dates { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+  #dash-root .sp-sprint-figs { display: flex; align-items: baseline; gap: .3rem; font-variant-numeric: tabular-nums; }
+  #dash-root .sp-sprint-figs .sp-big { font-family: var(--font-anthropic-serif); font-size: 1.6rem; line-height: 1; }
+  #dash-root .sp-sprint-figs .sp-of { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  #dash-root .sp-meter { height: 6px; border-radius: 999px; background: color-mix(in srgb, var(--color-fg) 9%, transparent); overflow: hidden; }
+  #dash-root .sp-meter > span { display: block; height: 100%; border-radius: 999px; background: var(--sp-accent); }
+  #dash-root .sp-sprint-hours { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+
+  /* KPI tiles */
+  #dash-root .sp-kpis { display: grid; gap: var(--cds-gap-sm); grid-template-columns: repeat(auto-fit, minmax(min(100%, 8.5rem), 1fr)); }
+  #dash-root .sp-kpi { border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-md); display: grid; gap: .25rem; align-content: start; background: var(--color-panel); min-height: 5.6rem; }
+  #dash-root .sp-kpi-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  #dash-root .sp-kpi-value { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); line-height: 1.1; font-variant-numeric: tabular-nums; }
+  #dash-root .sp-kpi-sub { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  #dash-root .sp-kpi.is-alert { border-color: color-mix(in srgb, var(--color-bad) 45%, var(--color-border-line)); background: color-mix(in srgb, var(--color-bad) 6%, var(--color-panel)); }
+  #dash-root .sp-kpi.is-alert .sp-kpi-value { color: var(--color-bad); }
+  #dash-root .sp-kpi.is-warn .sp-kpi-value { color: var(--color-warn); }
+  #dash-root .sp-kpi button.sp-kpi-link { appearance: none; border: 0; background: none; padding: 0; color: var(--sp-accent); font: inherit; font-size: var(--cds-font-size-caption); cursor: pointer; text-align: left; }
+  #dash-root .sp-inner-kpis { display: grid; gap: var(--cds-gap-sm); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  /* chart */
+  #dash-root .sp-chart { position: relative; min-height: 15rem; }
+  #dash-root .sp-chart svg { display: block; overflow: visible; }
+  #dash-root .sp-chart .sp-bar { cursor: pointer; }
+  #dash-root .sp-tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); white-space: nowrap; z-index: 2; }
+  #dash-root .sp-tip .sp-tip-h { color: var(--cds-text-secondary); margin-bottom: 2px; }
+  #dash-root .sp-legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  #dash-root .sp-legend span::before { content: ""; display: inline-block; width: .7rem; height: .7rem; border-radius: 3px; margin-right: .35rem; vertical-align: -1px; background: var(--sw); }
+
+  /* chips */
+  #dash-root .sp-chips { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); }
+  #dash-root .sp-chip { appearance: none; font: inherit; font-size: var(--cds-font-size-caption); color: var(--color-fg); background: transparent; border: 1px solid var(--color-border-line); border-radius: 999px; padding: .3rem .7rem; display: inline-flex; align-items: center; gap: .45rem; cursor: pointer; transition: background var(--cds-dur-slow), border-color var(--cds-dur-slow); }
+  #dash-root .sp-chip:hover { border-color: var(--chip, var(--sp-accent)); }
+  #dash-root .sp-chip[aria-pressed="true"] { background: color-mix(in srgb, var(--chip, var(--sp-accent)) 16%, transparent); border-color: var(--chip, var(--sp-accent)); }
+  #dash-root .sp-chip .sp-dot { width: .55rem; height: .55rem; border-radius: 50%; background: var(--chip, var(--sp-accent)); flex: none; }
+  #dash-root .sp-chip .sp-count { font-variant-numeric: tabular-nums; color: var(--color-fg-muted); }
+  #dash-root .sp-chip[aria-pressed="true"] .sp-count { color: var(--color-fg); font-weight: 600; }
+
+  /* tables */
+  #dash-root .sp-tablewrap { overflow: auto; max-height: 34rem; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); min-height: 6rem; }
+  #dash-root .sp-table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+  #dash-root .sp-table th { position: sticky; top: 0; background: var(--color-panel); text-align: left; font-weight: var(--cds-font-weight-medium); color: var(--color-fg-muted); padding: var(--cds-pad-sm) var(--cds-pad-md); border-bottom: 1px solid var(--color-border-line); white-space: nowrap; z-index: 1; }
+  #dash-root .sp-table th button { appearance: none; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; padding: 0; }
+  #dash-root .sp-table th[aria-sort] button { color: var(--color-fg); }
+  #dash-root .sp-table td { padding: var(--cds-pad-sm) var(--cds-pad-md); border-bottom: 1px solid var(--color-border-line); vertical-align: top; }
+  #dash-root .sp-table tr:last-child td { border-bottom: 0; }
+  #dash-root .sp-table tbody tr:hover td { background: color-mix(in srgb, var(--sp-accent) 5%, transparent); }
+  #dash-root .sp-table .sp-num { text-align: right; }
+  #dash-root .sp-table .sp-sum { min-width: 14rem; max-width: 34rem; line-height: 1.4; }
+  #dash-root .sp-table a { color: var(--sp-accent); text-decoration: none; font-weight: var(--cds-font-weight-medium); white-space: nowrap; }
+  #dash-root .sp-table a:hover { text-decoration: underline; }
+  #dash-root .sp-empty { padding: var(--cds-pad-lg); color: var(--color-fg-muted); text-align: center; font-size: var(--cds-font-size-caption); }
+  #dash-root .sp-hbar { display: grid; grid-template-columns: 1fr 3.2rem; align-items: center; gap: .5rem; min-width: 8rem; }
+  #dash-root .sp-hbar i { display: block; height: 8px; border-radius: 999px; background: var(--sp-accent); min-width: 2px; }
+  #dash-root .sp-hbar span { text-align: right; }
+
+  /* pills */
+  #dash-root .sp-pill { display: inline-block; white-space: nowrap; border-radius: 999px; padding: .05rem .55rem; font-size: var(--cds-font-size-caption); background: color-mix(in srgb, var(--pill) 15%, transparent); color: var(--color-fg); border: 1px solid color-mix(in srgb, var(--pill) 40%, transparent); }
+  #dash-root .sp-prio { white-space: nowrap; }
+  #dash-root .sp-prio::before { content: ""; display: inline-block; width: .5rem; height: .5rem; border-radius: 2px; margin-right: .35rem; background: var(--prio); vertical-align: 0; }
+
+  /* watchlist */
+  #dash-root .sp-watch { border-color: color-mix(in srgb, var(--color-bad) 35%, var(--color-border-line)); }
+  #dash-root .sp-watch-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: var(--cds-gap-sm); }
+  #dash-root .sp-watch-date { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+  #dash-root .sp-watch-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--cds-gap-sm); min-height: 8rem; }
+  #dash-root .sp-watch-item { display: grid; grid-template-columns: 2.6rem minmax(0, 1fr) auto; gap: var(--cds-gap-md); align-items: start; padding: var(--cds-pad-md); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); background: var(--color-bg); }
+  #dash-root .sp-watch-item.is-intervene { border-left: 4px solid var(--color-bad); }
+  #dash-root .sp-watch-item.is-watch { border-left: 4px solid var(--color-warn); }
+  #dash-root .sp-rank { font-family: var(--font-anthropic-serif); font-size: 1.5rem; line-height: 1; color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+  #dash-root .sp-watch-main { display: grid; gap: .35rem; min-width: 0; }
+  #dash-root .sp-watch-title { display: flex; flex-wrap: wrap; gap: .25rem .6rem; align-items: baseline; }
+  #dash-root .sp-watch-title a { color: var(--sp-accent); font-weight: var(--cds-font-weight-medium); text-decoration: none; }
+  #dash-root .sp-watch-title a:hover { text-decoration: underline; }
+  #dash-root .sp-watch-sum { line-height: 1.4; overflow-wrap: anywhere; }
+  #dash-root .sp-watch-meta { display: flex; flex-wrap: wrap; gap: .25rem .9rem; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  #dash-root .sp-reasons { display: flex; flex-wrap: wrap; gap: .3rem; }
+  #dash-root .sp-reason { font-size: var(--cds-font-size-caption); border-radius: 4px; padding: .05rem .45rem; background: color-mix(in srgb, var(--color-bad) 10%, transparent); color: var(--color-fg); }
+  #dash-root .sp-score { text-align: center; display: grid; gap: 2px; }
+  #dash-root .sp-score b { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: 1.6rem; line-height: 1; font-variant-numeric: tabular-nums; }
+  #dash-root .sp-score span { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--color-fg-muted); }
+
+  #dash-root .sp-toolbar { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); align-items: center; justify-content: space-between; }
+  #dash-root .sp-search { font: inherit; font-size: var(--cds-font-size-caption); padding: .4rem .7rem; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); background: var(--color-bg); color: var(--color-fg); min-width: 0; width: min(100%, 16rem); }
+  #dash-root .sp-rules { margin: 0; padding-left: 1.1rem; display: grid; gap: .35rem; font-size: var(--cds-font-size-caption); line-height: 1.5; max-width: 80ch; }
+  #dash-root .sp-rules b { font-weight: 600; }
+  #dash-root .sp-fail { display: flex; align-items: center; justify-content: center; gap: .5rem; min-height: inherit; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); padding: var(--cds-pad-md); text-align: center; }
+  #dash-root .sp-fail::before { content: ""; width: .375rem; height: .375rem; border-radius: 50%; background: var(--color-bad); flex: none; }
+  #dash-root [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+  #dash-root [data-dash-source-state=empty] { color: transparent; }
+  @media (prefers-reduced-motion: no-preference) {
+    #dash-root .sp-meter > span, #dash-root .sp-hbar i { transition: width var(--cds-dur-slow) var(--cds-ease-out); }
+  }
+  @media (max-width: 560px) {
+    #dash-root .sp-watch-item { grid-template-columns: minmax(0, 1fr) auto; }
+    #dash-root .sp-rank { display: none; }
+    #dash-root .sp-hide-narrow { display: none; }
+  }
+</style>
+
+<div class="sp" id="sprint-pulse">
+  <header class="sp-head" id="overview">
+    <div class="sp-titlebar">
+      <h1 class="sp-title">Sprint Pulse</h1>
+      <span class="sp-scope">Prod board 1282 · IP, IR and CR tickets · live from Jira</span>
+    </div>
+    <p class="sp-takeaway dash-skeleton" id="takeaway">—</p>
+    <nav class="sp-tabs" role="tablist" aria-label="Dashboard sections">
+      <button class="sp-tab" role="tab" id="tab-sprints" data-tab="sprints" aria-controls="sprints" aria-selected="true">Sprints</button>
+      <button class="sp-tab" role="tab" id="tab-risk" data-tab="risk" aria-controls="risk" aria-selected="false">Backlog risk <span class="sp-badge" id="tab-risk-badge" data-source="risk_summary" data-field="intervene" data-row="0" hidden>—</span></button>
+    </nav>
+  </header>
+
+  <!-- ============ SPRINTS ============ -->
+  <section class="sp-page" id="sprints" role="tabpanel" aria-labelledby="tab-sprints">
+    <div>
+      <p class="sp-section-label">Sprints, newest first · pick one to open it</p>
+      <div class="sp-strip" id="sprint-strip" data-source="sprints"></div>
+    </div>
+
+    <div class="sp-grid">
+      <article class="sp-card" id="sprint-summary">
+        <h2 id="sprint-summary-title">Selected sprint</h2>
+        <p class="sp-note" id="sprint-summary-note">—</p>
+        <div class="sp-inner-kpis" id="sprint-kpis"></div>
+      </article>
+      <article class="sp-card" id="closed-chart-card">
+        <h2>Tickets closed per sprint</h2>
+        <p class="sp-note">Last 12 dated sprints, oldest to newest. Hover for detail, click a bar to open that sprint.</p>
+        <div class="sp-legend" id="closed-legend"></div>
+        <div class="sp-chart" id="closed-chart" data-source="sprints"></div>
+      </article>
+    </div>
+
+    <article class="sp-card" id="dev-card">
+      <h2 id="dev-title">Developers in this sprint</h2>
+      <p class="sp-note">Closed = tickets assigned to them that reached Done in this sprint (Cancelled is not counted). Hours = their Jira worklogs dated inside the sprint window, on any board ticket.</p>
+      <div class="sp-tablewrap" style="max-height: 26rem;">
+        <table class="sp-table" id="dev-table" data-source="dev_sprint" data-row-key="sprint_id,developer">
+          <thead><tr>
+            <th data-field="developer">Developer</th>
+            <th data-field="tickets" class="sp-num">Tickets</th>
+            <th data-field="closed" class="sp-num">Closed</th>
+            <th data-field="hours">Hours logged</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </article>
+
+    <article class="sp-card" id="tickets-card">
+      <h2 id="tickets-title">Tickets in this sprint</h2>
+      <p class="sp-note">Click a status to see only the tickets in it. Click it again, or All, to clear.</p>
+      <div class="sp-chips" id="status-chips" role="group" aria-label="Filter by status"></div>
+      <div class="sp-tablewrap">
+        <table class="sp-table" id="ticket-table" data-source="board_tickets" data-row-key="key">
+          <thead><tr>
+            <th data-field="key">Ticket</th>
+            <th data-field="summary">Summary</th>
+            <th data-field="status">Status</th>
+            <th data-field="assignee">Assignee</th>
+            <th data-field="priority" class="sp-hide-narrow">Priority</th>
+            <th data-field="hours" class="sp-num sp-hide-narrow">Hours</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============ BACKLOG RISK ============ -->
+  <section class="sp-page" id="risk" role="tabpanel" aria-labelledby="tab-risk" hidden>
+    <div class="sp-kpis" id="risk-kpis">
+      <div class="sp-kpi"><span class="sp-kpi-label">Open tickets</span><span class="sp-kpi-value dash-skeleton" data-source="risk_summary" data-field="open" data-row="0">—</span><span class="sp-kpi-sub">IP, IR and CR, not Done</span></div>
+      <div class="sp-kpi is-alert"><span class="sp-kpi-label">Need management action</span><span class="sp-kpi-value dash-skeleton" data-source="risk_summary" data-field="intervene" data-row="0">—</span><button class="sp-kpi-link" data-flag="intervene">Show them</button></div>
+      <div class="sp-kpi is-warn"><span class="sp-kpi-label">No update in 60+ days</span><span class="sp-kpi-value dash-skeleton" data-source="risk_summary" data-field="stale" data-row="0">—</span><button class="sp-kpi-link" data-flag="stale">Show them</button></div>
+      <div class="sp-kpi is-warn"><span class="sp-kpi-label">High priority and blocked</span><span class="sp-kpi-value dash-skeleton" data-source="risk_summary" data-field="high_blocked" data-row="0">—</span><button class="sp-kpi-link" data-flag="blocked_hp">Show them</button></div>
+      <div class="sp-kpi is-warn"><span class="sp-kpi-label">Invoicing or financial</span><span class="sp-kpi-value dash-skeleton" data-source="risk_summary" data-field="financial" data-row="0">—</span><button class="sp-kpi-link" data-flag="financial">Show them</button></div>
+    </div>
+
+    <article class="sp-card sp-watch" id="watchlist">
+      <div class="sp-watch-head">
+        <h2>Today's management watchlist</h2>
+        <span class="sp-watch-date" id="watch-date"></span>
+      </div>
+      <p class="sp-note">The 5–10 open tickets most likely to blow up, ranked by risk score. It is recalculated from Jira every time the page opens, so it changes as tickets move. Red edge: needs management action now. Amber edge: highest-risk of the rest, keep watching.</p>
+      <ol class="sp-watch-list" id="watch-list" data-source="watchlist"></ol>
+    </article>
+
+    <article class="sp-card" id="flagged">
+      <h2>All flagged backlog tickets</h2>
+      <p class="sp-note">Every open ticket with at least one risk signal. Sort by a column header, search by any text.</p>
+      <div class="sp-toolbar">
+        <div class="sp-chips" id="flag-chips" role="group" aria-label="Filter by risk signal"></div>
+        <input class="sp-search" id="risk-search" type="search" placeholder="Search tickets" aria-label="Search flagged tickets">
+      </div>
+      <div class="sp-tablewrap">
+        <table class="sp-table" id="risk-table" data-source="risk" data-row-key="key">
+          <thead><tr>
+            <th data-field="key">Ticket</th>
+            <th data-field="summary">Summary</th>
+            <th data-field="reasons">Why it is flagged</th>
+            <th data-field="priority" class="sp-hide-narrow">Priority</th>
+            <th data-field="assignee" class="sp-hide-narrow">Assignee</th>
+            <th data-field="updated" data-sort="updated"><button type="button">Last updated</button></th>
+            <th data-field="score" data-sort="score" class="sp-num"><button type="button">Score</button></th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </article>
+
+    <article class="sp-card" id="method">
+      <h2>How the risk score works</h2>
+      <ol class="sp-rules">
+        <li><b>+3 stale:</b> no update in Jira for 60 days or more.</li>
+        <li><b>+3 / +2 priority:</b> Highest scores 3, High scores 2.</li>
+        <li><b>+3 unresolved dependency:</b> an open "is blocked by" or "depends on" link. A ticket only in Blocked status scores +2.</li>
+        <li><b>+3 financial:</b> the summary or labels mention invoicing, billing, finance, payments, payroll, timesheets, tax/VAT, credit notes, purchase orders, rate cards, revenue, accruals, remittance or funding.</li>
+        <li><b>+1 no owner:</b> High or Highest priority with no assignee.</li>
+        <li><b>Needs management action</b> when a high-priority ticket is blocked or stale, when a financial ticket is blocked, stale or high priority, or when the score reaches 7.</li>
+      </ol>
+    </article>
+  </section>
+</div>
+
+<script>
+  /* ---------- loaders: Jira search pages -> rows ---------- */
+  dash.loader('sprint_tickets', {
+    description: 'Follows Jira search pages (up to 10) and makes one row per ticket, with the ticket’s most recent sprint unwrapped into columns.',
+    fn: async ({ answer, call, args }) => {
+      const parse = (a) => { if (typeof a !== 'string') return a; try { return JSON.parse(a); } catch (e) { throw new Error(a); } };
+      let page = parse(answer);
+      if (!page || !page.issues) throw new Error((page && (page.message || page.error)) || 'Jira did not return an issues list');
+      const nodes = [...(page.issues.nodes || [])];
+      let pages = 1;
+      while (page.issues.pageInfo && page.issues.pageInfo.hasNextPage && pages < 10) {
+        page = parse(await call('searchJiraIssuesUsingJql', { ...args, nextPageToken: page.issues.pageInfo.endCursor }));
+        if (!page || !page.issues) throw new Error((page && (page.message || page.error)) || 'Jira stopped returning pages');
+        nodes.push(...(page.issues.nodes || []));
+        pages += 1;
+      }
+      const rows = nodes.map((n) => {
+        const f = n.fields || {};
+        const sp = (f.customfield_10021 || []).slice().sort((a, b) => String(a.startDate || '').localeCompare(String(b.startDate || ''))).pop() || {};
+        return {
+          key: n.key,
+          summary: f.summary || '',
+          project: String(n.key).split('-')[0],
+          type: (f.issuetype && f.issuetype.name) || '',
+          status: (f.status && f.status.name) || '',
+          category: (f.status && f.status.statusCategory && f.status.statusCategory.key) || '',
+          priority: (f.priority && f.priority.name) || '',
+          assignee: (f.assignee && f.assignee.displayName) || 'Unassigned',
+          sprint_id: sp.id == null ? null : sp.id,
+          sprint: sp.name || '',
+          sprint_start: sp.startDate || null,
+          sprint_end: sp.endDate || null,
+          board_id: sp.boardId == null ? null : sp.boardId,
+          resolved: f.resolutiondate ? String(f.resolutiondate).slice(0, 10) : null,
+          hours: Math.round(((f.timespent || 0) / 3600) * 100) / 100,
+        };
+      });
+      return {
+        columns: ['key', 'summary', 'project', 'type', 'status', 'category', 'priority', 'assignee', 'sprint_id', 'sprint', 'sprint_start', 'sprint_end', 'board_id', 'resolved', 'hours'],
+        rows,
+        cut: !!(page.issues.pageInfo && page.issues.pageInfo.hasNextPage),
+      };
+    },
+  });
+
+  dash.loader('worklogs', {
+    description: 'Follows Jira search pages (up to 10) and makes one row per worklog entry: ticket, who logged it, the day it was started, and hours.',
+    fn: async ({ answer, call, args }) => {
+      const parse = (a) => { if (typeof a !== 'string') return a; try { return JSON.parse(a); } catch (e) { throw new Error(a); } };
+      let page = parse(answer);
+      if (!page || !page.issues) throw new Error((page && (page.message || page.error)) || 'Jira did not return an issues list');
+      const nodes = [...(page.issues.nodes || [])];
+      let pages = 1;
+      while (page.issues.pageInfo && page.issues.pageInfo.hasNextPage && pages < 10) {
+        page = parse(await call('searchJiraIssuesUsingJql', { ...args, nextPageToken: page.issues.pageInfo.endCursor }));
+        if (!page || !page.issues) throw new Error((page && (page.message || page.error)) || 'Jira stopped returning pages');
+        nodes.push(...(page.issues.nodes || []));
+        pages += 1;
+      }
+      let cut = !!(page.issues.pageInfo && page.issues.pageInfo.hasNextPage);
+      const rows = [];
+      for (const n of nodes) {
+        const wl = (n.fields && n.fields.worklog) || {};
+        const list = wl.worklogs || [];
+        if ((wl.total || 0) > list.length) cut = true;
+        for (const w of list) {
+          rows.push({
+            key: n.key,
+            author: (w.author && w.author.displayName) || 'Unknown',
+            started: String(w.started || '').slice(0, 10),
+            hours: Math.round(((w.timeSpentSeconds || 0) / 3600) * 100) / 100,
+          });
+        }
+      }
+      return { columns: ['key', 'author', 'started', 'hours'], rows, cut };
+    },
+  });
+
+  dash.loader('backlog', {
+    description: 'Follows Jira search pages (up to 10) and makes one row per open ticket, with its links to still-open blocking tickets counted and listed.',
+    fn: async ({ answer, call, args }) => {
+      const parse = (a) => { if (typeof a !== 'string') return a; try { return JSON.parse(a); } catch (e) { throw new Error(a); } };
+      let page = parse(answer);
+      if (!page || !page.issues) throw new Error((page && (page.message || page.error)) || 'Jira did not return an issues list');
+      const nodes = [...(page.issues.nodes || [])];
+      let pages = 1;
+      while (page.issues.pageInfo && page.issues.pageInfo.hasNextPage && pages < 10) {
+        page = parse(await call('searchJiraIssuesUsingJql', { ...args, nextPageToken: page.issues.pageInfo.endCursor }));
+        if (!page || !page.issues) throw new Error((page && (page.message || page.error)) || 'Jira stopped returning pages');
+        nodes.push(...(page.issues.nodes || []));
+        pages += 1;
+      }
+      const rows = nodes.map((n) => {
+        const f = n.fields || {};
+        const blockers = [];
+        for (const l of f.issuelinks || []) {
+          const t = l.type || {};
+          let other = null;
+          if (l.inwardIssue && /blocked by|depends on/i.test(t.inward || '')) other = l.inwardIssue;
+          if (l.outwardIssue && /depends on/i.test(t.outward || '')) other = l.outwardIssue;
+          const cat = other && other.fields && other.fields.status && other.fields.status.statusCategory && other.fields.status.statusCategory.key;
+          if (other && cat !== 'done') blockers.push(other.key);
+        }
+        const sp = (f.customfield_10021 || []).slice().sort((a, b) => String(a.startDate || '').localeCompare(String(b.startDate || ''))).pop() || {};
+        return {
+          key: n.key,
+          summary: f.summary || '',
+          project: String(n.key).split('-')[0],
+          type: (f.issuetype && f.issuetype.name) || '',
+          status: (f.status && f.status.name) || '',
+          priority: (f.priority && f.priority.name) || '',
+          assignee: (f.assignee && f.assignee.displayName) || 'Unassigned',
+          created: f.created ? String(f.created).slice(0, 10) : null,
+          updated: f.updated ? String(f.updated).slice(0, 10) : null,
+          due: f.duedate || null,
+          labels: (f.labels || []).join(', '),
+          sprint: sp.name || '',
+          blockers: blockers.length,
+          blocker_keys: blockers.join(', '),
+        };
+      });
+      return {
+        columns: ['key', 'summary', 'project', 'type', 'status', 'priority', 'assignee', 'created', 'updated', 'due', 'labels', 'sprint', 'blockers', 'blocker_keys'],
+        rows,
+        cut: !!(page.issues.pageInfo && page.issues.pageInfo.hasNextPage),
+      };
+    },
+  });
+
+  dash.loader('stale', {
+    description: 'Follows Jira search pages (up to 10) and lists each open ticket Jira reports as not updated in 60 days.',
+    fn: async ({ answer, call, args }) => {
+      const parse = (a) => { if (typeof a !== 'string') return a; try { return JSON.parse(a); } catch (e) { throw new Error(a); } };
+      let page = parse(answer);
+      if (!page || !page.issues) throw new Error((page && (page.message || page.error)) || 'Jira did not return an issues list');
+      const nodes = [...(page.issues.nodes || [])];
+      let pages = 1;
+      while (page.issues.pageInfo && page.issues.pageInfo.hasNextPage && pages < 10) {
+        page = parse(await call('searchJiraIssuesUsingJql', { ...args, nextPageToken: page.issues.pageInfo.endCursor }));
+        if (!page || !page.issues) throw new Error((page && (page.message || page.error)) || 'Jira stopped returning pages');
+        nodes.push(...(page.issues.nodes || []));
+        pages += 1;
+      }
+      return {
+        columns: ['key', 'updated'],
+        rows: nodes.map((n) => ({ key: n.key, updated: n.fields && n.fields.updated ? String(n.fields.updated).slice(0, 10) : null })),
+        cut: !!(page.issues.pageInfo && page.issues.pageInfo.hasNextPage),
+      };
+    },
+  });
+
+  /* ---------- calculations ---------- */
+  dash.calc('board_tickets', {
+    title: 'Prod board tickets',
+    description: 'Sprint tickets whose latest sprint belongs to board 1282 (the Prod sprints).',
+    inputs: ['sprint_tickets'],
+    fn: (sprint_tickets) => sprint_tickets.filter((t) => t.board_id === 1282),
+  });
+
+  dash.calc('sprints', {
+    title: 'Sprint totals',
+    description: 'Per sprint: tickets, closed (Done, not Cancelled), still open, and hours from worklogs dated inside the sprint window. Newest first.',
+    inputs: ['board_tickets', 'worklogs'],
+    fn: (board_tickets, worklogs) => {
+      const keys = new Set(board_tickets.map((t) => t.key));
+      const by = new Map();
+      for (const t of board_tickets) {
+        if (t.sprint_id == null) continue;
+        let s = by.get(t.sprint_id);
+        if (!s) {
+          s = { sprint_id: t.sprint_id, sprint: t.sprint, start: t.sprint_start ? t.sprint_start.slice(0, 10) : null, end: t.sprint_end ? t.sprint_end.slice(0, 10) : null, tickets: 0, closed: 0, open: 0, hours: 0 };
+          by.set(t.sprint_id, s);
+        }
+        s.tickets += 1;
+        if (t.category === 'done' && t.status !== 'Cancelled') s.closed += 1;
+        if (t.category !== 'done') s.open += 1;
+      }
+      const list = [...by.values()];
+      for (const w of worklogs) {
+        if (!keys.has(w.key)) continue;
+        for (const s of list) if (s.start && s.end && w.started >= s.start && w.started <= s.end) s.hours += w.hours;
+      }
+      for (const s of list) s.hours = Math.round(s.hours * 10) / 10;
+      return list.sort((a, b) => String(b.start || '').localeCompare(String(a.start || '')));
+    },
+  });
+
+  dash.calc('dev_sprint', {
+    title: 'Developers per sprint',
+    description: 'Per sprint and person: tickets assigned, tickets closed, and hours they logged inside the sprint window.',
+    inputs: ['board_tickets', 'worklogs', 'sprints'],
+    fn: (board_tickets, worklogs, sprints) => {
+      const keys = new Set(board_tickets.map((t) => t.key));
+      const rows = new Map();
+      const get = (sid, dev) => {
+        const k = sid + '|' + dev;
+        let r = rows.get(k);
+        if (!r) { r = { sprint_id: sid, developer: dev, tickets: 0, closed: 0, hours: 0 }; rows.set(k, r); }
+        return r;
+      };
+      for (const t of board_tickets) {
+        if (t.sprint_id == null) continue;
+        const r = get(t.sprint_id, t.assignee);
+        r.tickets += 1;
+        if (t.category === 'done' && t.status !== 'Cancelled') r.closed += 1;
+      }
+      for (const w of worklogs) {
+        if (!keys.has(w.key)) continue;
+        for (const s of sprints) if (s.start && s.end && w.started >= s.start && w.started <= s.end) get(s.sprint_id, w.author).hours += w.hours;
+      }
+      return [...rows.values()]
+        .map((r) => ({ ...r, hours: Math.round(r.hours * 10) / 10 }))
+        .sort((a, b) => b.closed - a.closed || b.hours - a.hours || a.developer.localeCompare(b.developer));
+    },
+  });
+
+  dash.calc('status_counts', {
+    title: 'Tickets per status',
+    description: 'How many of each sprint’s tickets sit in each Jira status.',
+    inputs: ['board_tickets'],
+    fn: (board_tickets) => {
+      const m = new Map();
+      for (const t of board_tickets) {
+        if (t.sprint_id == null) continue;
+        const k = t.sprint_id + '|' + t.status;
+        const r = m.get(k) || { sprint_id: t.sprint_id, status: t.status, category: t.category, n: 0 };
+        r.n += 1;
+        m.set(k, r);
+      }
+      const order = { new: 0, indeterminate: 1, done: 2 };
+      return [...m.values()].sort((a, b) => (order[a.category] ?? 1) - (order[b.category] ?? 1) || b.n - a.n);
+    },
+  });
+
+  dash.calc('risk', {
+    title: 'Backlog risk scores',
+    description: 'Scores every open ticket on staleness, priority, open blockers, financial impact and missing owner; keeps those with any signal.',
+    inputs: ['backlog', 'stale'],
+    fn: (backlog, stale) => {
+      const FIN = /invoic|billing|\bbill(s|ed)?\b|financ|payment|payroll|revenue|\btax|\bvat\b|credit note|purchase order|\bpo\b|rate card|timesheet|accrual|remittance|funding/i;
+      const staleKeys = new Set(stale.map((s) => s.key));
+      return backlog.map((t) => {
+        const isStale = staleKeys.has(t.key);
+        const hi = t.priority === 'Highest' ? 3 : t.priority === 'High' ? 2 : 0;
+        const blocked = t.blockers > 0 || t.status === 'Blocked';
+        const fin = FIN.test(t.summary + ' ' + t.labels);
+        let score = 0;
+        const why = [];
+        if (isStale) { score += 3; why.push('No update in 60+ days'); }
+        if (hi) { score += hi; why.push(t.priority + ' priority'); }
+        if (t.blockers > 0) { score += 3; why.push('Blocked by ' + t.blocker_keys); }
+        else if (t.status === 'Blocked') { score += 2; why.push('Status is Blocked'); }
+        if (fin) { score += 3; why.push('Invoicing or financial'); }
+        if (hi && t.assignee === 'Unassigned') { score += 1; why.push('No owner'); }
+        const intervene = (hi > 0 && (blocked || isStale)) || (fin && (blocked || isStale || hi > 0)) || score >= 7;
+        return {
+          key: t.key, summary: t.summary, status: t.status, priority: t.priority, assignee: t.assignee, updated: t.updated, sprint: t.sprint,
+          reasons: why.join(' · '), score,
+          intervene: intervene ? 'Yes' : 'No', stale: isStale ? 'Yes' : 'No', blocked_hp: hi > 0 && blocked ? 'Yes' : 'No', financial: fin ? 'Yes' : 'No',
+        };
+      }).filter((r) => r.score > 0).sort((a, b) => b.score - a.score || String(a.updated).localeCompare(String(b.updated)));
+    },
+  });
+
+  dash.calc('risk_summary', {
+    title: 'Backlog risk totals',
+    description: 'Open tickets, and how many carry each risk signal.',
+    inputs: ['backlog', 'risk'],
+    fn: (backlog, risk) => [{
+      open: backlog.length,
+      intervene: risk.filter((r) => r.intervene === 'Yes').length,
+      stale: risk.filter((r) => r.stale === 'Yes').length,
+      high_blocked: risk.filter((r) => r.blocked_hp === 'Yes').length,
+      financial: risk.filter((r) => r.financial === 'Yes').length,
+    }],
+  });
+
+  dash.calc('watchlist', {
+    title: 'Today’s watchlist',
+    description: 'Up to 10 tickets needing management action, highest score first; topped up to 5 with the riskiest of the rest.',
+    inputs: ['risk'],
+    fn: (risk) => {
+      const act = risk.filter((r) => r.intervene === 'Yes').slice(0, 10);
+      const rest = act.length < 5 ? risk.filter((r) => r.intervene !== 'Yes').slice(0, 5 - act.length) : [];
+      return [...act, ...rest].map((r, i) => ({ rank: i + 1, ...r }));
+    },
+  });
+
+  /* ---------- page ---------- */
+  (() => {
+    const BOARD_URL = 'https://megatron.atlassian.net/browse/';
+    const $ = (s) => document.querySelector(s);
+    const root = $('#sprint-pulse');
+    const enc = encodeURIComponent;
+    const st = { tab: 'sprints', sprint: null, status: null, flag: 'intervene', q: '', sort: 'score', dir: 'desc' };
+    const fmtDay = d3.utcFormat('%b %-d');
+    const day = (s) => (s ? new Date(s + 'T00:00:00Z') : null);
+    const today = d3.utcFormat('%Y-%m-%d')(new Date());
+
+    const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+    const mark = (e, src, field, where) => { e.dataset.source = src; e.dataset.field = field; if (where) e.dataset.where = where; return e; };
+    const ds = (id) => dash.data(id);
+    const ok = (...ids) => ids.every((i) => ds(i).status === 'ok');
+    const failed = (...ids) => ids.some((i) => ['error', 'connect', 'declined', 'missing'].includes(ds(i).status));
+    const showFail = (box, msg) => { box.classList.remove('dash-skeleton'); box.replaceChildren(el('div', 'sp-fail', msg || 'Failed to load')); };
+    const shortName = (n) => String(n || '').replace(/^prod\s*-\s*/i, '').replace(/^(January|February|March|April|May|June|July|August|September|October|November|December)/i, (m) => m.slice(0, 3));
+    const range = (s) => (s.start && s.end ? fmtDay(day(s.start)) + ' – ' + fmtDay(day(s.end)) : 'No dates');
+    const catColor = (cat, status) => (status === 'Blocked' ? 'var(--color-bad)' : cat === 'done' ? 'var(--color-ok)' : cat === 'indeterminate' ? 'var(--sp-accent)' : 'var(--cds-chart-muted)');
+    const prioColor = (p) => (p === 'Highest' ? 'var(--color-bad)' : p === 'High' ? 'var(--color-warn)' : p === 'Medium' ? 'var(--sp-accent)' : 'var(--cds-chart-muted)');
+    const keyLink = (key) => { const a = el('a', null, key); a.href = BOARD_URL + key; a.target = '_blank'; a.rel = 'noopener'; return a; };
+
+    root.style.setProperty('--sp-accent', dash.colors[0]);
+
+    /* tabs + links */
+    const showTab = (name) => {
+      st.tab = name;
+      for (const b of document.querySelectorAll('#sprint-pulse .sp-tab')) b.setAttribute('aria-selected', String(b.dataset.tab === name));
+      $('#sprints').hidden = name !== 'sprints';
+      $('#risk').hidden = name !== 'risk';
+      dash.setLink(name);
+      draw();
+    };
+    for (const b of document.querySelectorAll('#sprint-pulse .sp-tab')) b.addEventListener('click', () => showTab(b.dataset.tab));
+
+    /* risk controls */
+    for (const b of document.querySelectorAll('#risk-kpis [data-flag]')) b.addEventListener('click', () => { st.flag = b.dataset.flag; draw(); $('#flagged').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+    $('#risk-search').addEventListener('input', (e) => { st.q = e.target.value.trim().toLowerCase(); drawRiskTable(); });
+    for (const th of document.querySelectorAll('#risk-table th[data-sort]')) th.querySelector('button').addEventListener('click', () => {
+      const k = th.dataset.sort;
+      st.dir = st.sort === k ? (st.dir === 'desc' ? 'asc' : 'desc') : (k === 'updated' ? 'asc' : 'desc');
+      st.sort = k;
+      drawRiskTable();
+    });
+
+    /* ---------- sprints tab ---------- */
+    const pickDefaultSprint = (sprints) => {
+      const dated = sprints.filter((s) => s.start);
+      const current = dated.find((s) => s.start <= today && (!s.end || today <= s.end));
+      if (current) return current.sprint_id;
+      const started = dated.find((s) => s.start <= today);
+      return (started || dated[0] || sprints[0] || {}).sprint_id ?? null;
+    };
+
+    function drawStrip(sprints) {
+      const strip = $('#sprint-strip');
+      strip.replaceChildren();
+      for (const s of sprints) {
+        const b = el('button', 'sp-sprint');
+        b.type = 'button';
+        b.setAttribute('aria-pressed', String(s.sprint_id === st.sprint));
+        const w = 'sprint_id=' + enc(s.sprint_id);
+        const top = el('div', 'sp-sprint-top');
+        top.append(el('span', 'sp-sprint-name', s.sprint));
+        if (s.start && s.start <= today && s.end && today <= s.end) top.append(el('span', 'sp-now', 'Now'));
+        const figs = el('div', 'sp-sprint-figs');
+        figs.append(mark(el('span', 'sp-big', String(s.closed)), 'sprints', 'closed', w), el('span', 'sp-of', 'of'), mark(el('span', 'sp-of', String(s.tickets)), 'sprints', 'tickets', w), el('span', 'sp-of', 'closed'));
+        const meter = el('div', 'sp-meter');
+        const fill = el('span');
+        fill.style.width = (s.tickets ? (100 * s.closed) / s.tickets : 0) + '%';
+        meter.append(fill);
+        const hrs = el('div', 'sp-sprint-hours');
+        hrs.append(mark(el('span', null, String(s.hours)), 'sprints', 'hours', w), document.createTextNode(' h logged'));
+        b.append(top, el('div', 'sp-sprint-dates', range(s)), figs, meter, hrs);
+        b.addEventListener('click', () => { st.sprint = s.sprint_id; st.status = null; draw(); });
+        strip.append(b);
+      }
+      const sel = strip.querySelector('[aria-pressed="true"]');
+      if (sel && !strip.dataset.scrolled) { strip.scrollLeft = Math.max(0, sel.offsetLeft - strip.offsetLeft - 8); strip.dataset.scrolled = '1'; }
+    }
+
+    function drawSummary(s, devRows) {
+      $('#sprint-summary-title').textContent = s.sprint;
+      $('#sprint-summary-note').textContent = range(s) + (s.start && s.start <= today && s.end && today <= s.end ? ' · in progress' : s.end && s.end < today ? ' · finished' : ' · upcoming');
+      const w = 'sprint_id=' + enc(s.sprint_id);
+      const tile = (label, field, sub, cls) => {
+        const k = el('div', 'sp-kpi' + (cls ? ' ' + cls : ''));
+        k.append(el('span', 'sp-kpi-label', label), mark(el('span', 'sp-kpi-value', String(s[field])), 'sprints', field, w));
+        if (sub) k.append(el('span', 'sp-kpi-sub', sub));
+        return k;
+      };
+      const people = devRows.filter((r) => r.developer !== 'Unassigned').length;
+      $('#sprint-kpis').replaceChildren(
+        tile('Tickets closed', 'closed', 'Done, not Cancelled'),
+        tile('Still open', 'open', 'not yet Done', s.open > 0 && s.end && s.end < today ? 'is-warn' : ''),
+        tile('Tickets in sprint', 'tickets', 'latest sprint on the ticket'),
+        tile('Hours logged', 'hours', people + (people === 1 ? ' person' : ' people') + ' involved'),
+      );
+    }
+
+    function drawChart(sprints) {
+      const box = $('#closed-chart');
+      if (box.clientWidth === 0) return;
+      const data = sprints.filter((s) => s.start).slice(0, 12).reverse();
+      box.replaceChildren();
+      $('#closed-legend').replaceChildren(
+        Object.assign(el('span', null, 'Closed'), { style: '--sw: ' + dash.colors[0] }),
+        Object.assign(el('span', null, 'Tickets in sprint'), { style: '--sw: color-mix(in srgb, var(--color-fg) 12%, transparent)' }),
+      );
+      if (!data.length) { box.append(el('div', 'sp-empty', 'No dated sprints yet.')); return; }
+      const W = box.clientWidth, H = 240, m = { t: 18, r: 8, b: 30, l: 30 };
+      const x = d3.scaleBand(data.map((d) => d.sprint_id), [m.l, W - m.r]).padding(0.28);
+      const y = d3.scaleLinear([0, d3.max(data, (d) => d.tickets) || 1], [H - m.b, m.t]).nice();
+      const svg = d3.select(box).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Tickets closed per sprint');
+      svg.append('g').selectAll('line').data(y.ticks(4)).join('line')
+        .attr('x1', m.l).attr('x2', W - m.r).attr('y1', (d) => y(d)).attr('y2', (d) => y(d)).attr('stroke', 'var(--cds-chart-grid)');
+      svg.append('g').selectAll('text').data(y.ticks(4)).join('text')
+        .attr('x', m.l - 6).attr('y', (d) => y(d)).attr('dy', '0.32em').attr('text-anchor', 'end')
+        .attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text(d3.format('d'));
+      const bw = Math.min(32, x.bandwidth());
+      const g = svg.append('g').selectAll('g').data(data).join('g').attr('class', 'sp-bar')
+        .attr('transform', (d) => `translate(${x(d.sprint_id) + (x.bandwidth() - bw) / 2},0)`);
+      g.append('rect').attr('width', bw).attr('y', (d) => y(d.tickets)).attr('height', (d) => y(0) - y(d.tickets)).attr('rx', 4)
+        .attr('fill', 'color-mix(in srgb, var(--color-fg) 12%, transparent)');
+      g.append('rect').attr('width', bw).attr('y', (d) => y(d.closed)).attr('height', (d) => y(0) - y(d.closed)).attr('rx', 4)
+        .attr('fill', (d) => (d.sprint_id === st.sprint ? dash.colors[0] : `color-mix(in srgb, ${dash.colors[0]} 70%, transparent)`))
+        .attr('stroke', (d) => (d.sprint_id === st.sprint ? 'var(--color-fg)' : 'none')).attr('stroke-width', 1.5);
+      g.append('text').attr('x', bw / 2).attr('y', (d) => y(d.closed) - 5).attr('text-anchor', 'middle')
+        .attr('fill', 'var(--color-fg)').style('font-size', 'var(--cds-font-size-caption)').style('font-variant-numeric', 'tabular-nums').text((d) => d.closed);
+      const every = Math.ceil(data.length / Math.max(1, Math.floor((W - m.l - m.r) / 64)));
+      svg.append('g').selectAll('text').data(data.filter((d, i) => (data.length - 1 - i) % every === 0)).join('text')
+        .attr('x', (d) => x(d.sprint_id) + x.bandwidth() / 2).attr('y', H - m.b + 16).attr('text-anchor', 'middle')
+        .attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text((d) => shortName(d.sprint));
+      svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(0)).attr('y2', y(0)).attr('stroke', 'var(--cds-chart-axis)');
+      const tip = el('div', 'sp-tip');
+      tip.hidden = true;
+      box.append(tip);
+      g.on('mousemove', (ev, d) => {
+        tip.replaceChildren(el('div', 'sp-tip-h', d.sprint + ' · ' + range(d)), el('div', null, d.closed + ' of ' + d.tickets + ' closed'), el('div', null, d.hours + ' h logged'));
+        tip.hidden = false;
+        const [px, py] = d3.pointer(ev, box);
+        const tw = tip.offsetWidth;
+        tip.style.left = Math.max(0, Math.min(W - tw, px + 12)) + 'px';
+        tip.style.top = Math.max(0, py - 52) + 'px';
+      }).on('mouseleave', () => { tip.hidden = true; })
+        .on('click', (ev, d) => { st.sprint = d.sprint_id; st.status = null; draw(); });
+    }
+
+    function drawDevs(rows) {
+      const tb = $('#dev-table tbody');
+      tb.replaceChildren();
+      if (!rows.length) { const tr = el('tr'); const td = el('td', 'sp-empty', 'Nobody has tickets or hours in this sprint yet.'); td.colSpan = 4; tr.append(td); tb.append(tr); return; }
+      const maxH = d3.max(rows, (r) => r.hours) || 1;
+      for (const r of rows) {
+        const tr = el('tr');
+        tr.dataset.key = enc(r.sprint_id) + ',' + enc(r.developer);
+        const bar = el('div', 'sp-hbar');
+        const i = el('i');
+        i.style.width = (100 * r.hours) / maxH + '%';
+        if (!r.hours) i.style.opacity = '0';
+        bar.append(el('div', null), el('span', null, String(r.hours)));
+        bar.firstChild.append(i);
+        const hc = el('td');
+        hc.append(bar);
+        tr.append(el('td', null, r.developer), el('td', 'sp-num', String(r.tickets)), el('td', 'sp-num', String(r.closed)), hc);
+        tb.append(tr);
+      }
+    }
+
+    function drawChips(counts, s) {
+      const box = $('#status-chips');
+      box.replaceChildren();
+      const all = el('button', 'sp-chip');
+      all.type = 'button';
+      all.setAttribute('aria-pressed', String(!st.status));
+      all.append(el('span', null, 'All'), mark(el('span', 'sp-count', String(s.tickets)), 'sprints', 'tickets', 'sprint_id=' + enc(s.sprint_id)));
+      all.addEventListener('click', () => { st.status = null; draw(); });
+      box.append(all);
+      for (const c of counts) {
+        const b = el('button', 'sp-chip');
+        b.type = 'button';
+        b.style.setProperty('--chip', catColor(c.category, c.status));
+        b.setAttribute('aria-pressed', String(st.status === c.status));
+        b.append(el('span', 'sp-dot'), el('span', null, c.status), mark(el('span', 'sp-count', String(c.n)), 'status_counts', 'n', 'sprint_id=' + enc(c.sprint_id) + '&status=' + enc(c.status)));
+        b.addEventListener('click', () => { st.status = st.status === c.status ? null : c.status; draw(); });
+        box.append(b);
+      }
+    }
+
+    function drawTickets(tickets) {
+      const tb = $('#ticket-table tbody');
+      tb.replaceChildren();
+      if (!tickets.length) { const tr = el('tr'); const td = el('td', 'sp-empty', 'No tickets in this status.'); td.colSpan = 6; tr.append(td); tb.append(tr); return; }
+      const order = { new: 0, indeterminate: 1, done: 2 };
+      for (const t of tickets.slice().sort((a, b) => (order[a.category] ?? 1) - (order[b.category] ?? 1) || a.status.localeCompare(b.status) || a.key.localeCompare(b.key))) {
+        const tr = el('tr');
+        const k = el('td');
+        k.append(keyLink(t.key));
+        const sc = el('td');
+        const pill = el('span', 'sp-pill', t.status);
+        pill.style.setProperty('--pill', catColor(t.category, t.status));
+        sc.append(pill);
+        const pc = el('td', 'sp-hide-narrow');
+        const pr = el('span', 'sp-prio', t.priority);
+        pr.style.setProperty('--prio', prioColor(t.priority));
+        pc.append(pr);
+        tr.append(k, el('td', 'sp-sum', t.summary), sc, el('td', null, t.assignee), pc, el('td', 'sp-num sp-hide-narrow', String(t.hours)));
+        tb.append(tr);
+      }
+    }
+
+    function drawSprints() {
+      const need = ['sprints', 'board_tickets', 'dev_sprint', 'status_counts'];
+      if (failed('sprint_tickets', 'worklogs', ...need)) {
+        for (const id of ['#sprint-strip', '#closed-chart', '#sprint-kpis']) showFail($(id));
+        return;
+      }
+      if (!ok(...need)) {
+        for (const id of ['#sprint-strip', '#closed-chart', '#sprint-kpis']) $(id).classList.add('dash-skeleton');
+        return;
+      }
+      for (const id of ['#sprint-strip', '#closed-chart', '#sprint-kpis']) $(id).classList.remove('dash-skeleton');
+      const sprints = ds('sprints').data;
+      if (!sprints.length) { $('#sprint-strip').replaceChildren(el('div', 'sp-empty', 'No sprints found on board 1282 in the last 90 days.')); return; }
+      if (st.sprint == null || !sprints.some((s) => s.sprint_id === st.sprint)) st.sprint = pickDefaultSprint(sprints);
+      const s = sprints.find((x) => x.sprint_id === st.sprint);
+      const devRows = ds('dev_sprint').data.filter((r) => r.sprint_id === st.sprint);
+      const counts = ds('status_counts').data.filter((c) => c.sprint_id === st.sprint);
+      if (st.status && !counts.some((c) => c.status === st.status)) st.status = null;
+      const tickets = ds('board_tickets').data.filter((t) => t.sprint_id === st.sprint && (!st.status || t.status === st.status));
+      drawStrip(sprints);
+      drawSummary(s, devRows);
+      drawChart(sprints);
+      $('#dev-title').textContent = 'Developers in ' + s.sprint;
+      drawDevs(devRows);
+      $('#tickets-title').textContent = (st.status ? st.status + ' tickets in ' : 'Tickets in ') + s.sprint;
+      drawChips(counts, s);
+      drawTickets(tickets);
+    }
+
+    /* ---------- risk tab ---------- */
+    const FLAGS = [
+      { id: 'intervene', label: 'Needs management action', color: 'var(--color-bad)' },
+      { id: 'blocked_hp', label: 'High priority, blocked', color: 'var(--color-warn)' },
+      { id: 'stale', label: 'No update in 60+ days', color: 'var(--color-warn)' },
+      { id: 'financial', label: 'Invoicing or financial', color: 'var(--color-warn)' },
+      { id: 'all', label: 'All flagged', color: 'var(--sp-accent)' },
+    ];
+
+    function drawWatch() {
+      const list = $('#watch-list');
+      $('#watch-date').textContent = 'As of ' + d3.utcFormat('%A %b %-d, %Y')(new Date());
+      if (failed('backlog', 'stale', 'risk', 'watchlist')) { list.classList.remove('dash-skeleton'); list.replaceChildren(el('li', 'sp-fail', 'Failed to load')); return; }
+      if (!ok('watchlist')) { list.classList.add('dash-skeleton'); return; }
+      list.classList.remove('dash-skeleton');
+      list.replaceChildren();
+      const rows = ds('watchlist').data;
+      if (!rows.length) { list.append(el('li', 'sp-empty', 'Nothing on the backlog carries a risk signal today.')); return; }
+      for (const r of rows) {
+        const w = 'key=' + enc(r.key);
+        const li = el('li', 'sp-watch-item ' + (r.intervene === 'Yes' ? 'is-intervene' : 'is-watch'));
+        const main = el('div', 'sp-watch-main');
+        const title = el('div', 'sp-watch-title');
+        title.append(mark(keyLink(r.key), 'watchlist', 'key', w));
+        const pill = el('span', 'sp-pill', r.status);
+        pill.style.setProperty('--pill', r.status === 'Blocked' ? 'var(--color-bad)' : 'var(--cds-chart-muted)');
+        title.append(pill);
+        const reasons = el('div', 'sp-reasons');
+        for (const x of r.reasons.split(' · ')) reasons.append(el('span', 'sp-reason', x));
+        const meta = el('div', 'sp-watch-meta');
+        const pr = el('span', 'sp-prio', r.priority);
+        pr.style.setProperty('--prio', prioColor(r.priority));
+        meta.append(pr, el('span', null, 'Owner: ' + r.assignee), mark(el('span', null, r.updated), 'watchlist', 'updated', w));
+        if (r.sprint) meta.append(el('span', null, 'Sprint: ' + r.sprint));
+        main.append(title, el('div', 'sp-watch-sum', r.summary), reasons, meta);
+        const score = el('div', 'sp-score');
+        score.append(mark(el('b', null, String(r.score)), 'watchlist', 'score', w), el('span', null, 'risk'));
+        li.append(mark(el('div', 'sp-rank', String(r.rank)), 'watchlist', 'rank', w), main, score);
+        list.append(li);
+      }
+    }
+
+    function drawFlagChips() {
+      const box = $('#flag-chips');
+      box.replaceChildren();
+      const sum = ok('risk_summary') ? ds('risk_summary').data[0] : null;
+      const field = { intervene: 'intervene', blocked_hp: 'high_blocked', stale: 'stale', financial: 'financial' };
+      for (const f of FLAGS) {
+        const b = el('button', 'sp-chip');
+        b.type = 'button';
+        b.style.setProperty('--chip', f.color);
+        b.setAttribute('aria-pressed', String(st.flag === f.id));
+        b.append(el('span', 'sp-dot'), el('span', null, f.label));
+        if (sum && field[f.id]) b.append(mark(el('span', 'sp-count', String(sum[field[f.id]])), 'risk_summary', field[f.id], null));
+        if (sum && field[f.id]) b.lastChild.dataset.row = '0';
+        b.addEventListener('click', () => { st.flag = f.id; drawRisk(); });
+        box.append(b);
+      }
+    }
+
+    function drawRiskTable() {
+      const tb = $('#risk-table tbody');
+      if (!ok('risk')) return;
+      let rows = ds('risk').data;
+      if (st.flag !== 'all') rows = rows.filter((r) => r[st.flag] === 'Yes');
+      if (st.q) rows = rows.filter((r) => [r.key, r.summary, r.reasons, r.assignee, r.status, r.priority].join(' ').toLowerCase().includes(st.q));
+      const dir = st.dir === 'asc' ? 1 : -1;
+      rows = rows.slice().sort((a, b) => (st.sort === 'score' ? (a.score - b.score) * dir || String(a.updated).localeCompare(String(b.updated)) : String(a.updated).localeCompare(String(b.updated)) * dir || b.score - a.score));
+      for (const th of document.querySelectorAll('#risk-table th[data-sort]')) {
+        if (th.dataset.sort === st.sort) th.setAttribute('aria-sort', st.dir === 'asc' ? 'ascending' : 'descending');
+        else th.removeAttribute('aria-sort');
+      }
+      tb.replaceChildren();
+      if (!rows.length) { const tr = el('tr'); const td = el('td', 'sp-empty', st.q ? 'No flagged tickets match that search.' : 'No tickets carry this signal right now.'); td.colSpan = 7; tr.append(td); tb.append(tr); return; }
+      for (const r of rows) {
+        const tr = el('tr');
+        const k = el('td');
+        k.append(keyLink(r.key));
+        const pc = el('td', 'sp-hide-narrow');
+        const pr = el('span', 'sp-prio', r.priority);
+        pr.style.setProperty('--prio', prioColor(r.priority));
+        pc.append(pr);
+        tr.append(k, el('td', 'sp-sum', r.summary), el('td', 'sp-sum', r.reasons), pc, el('td', 'sp-hide-narrow', r.assignee), el('td', null, r.updated), el('td', 'sp-num', String(r.score)));
+        tb.append(tr);
+      }
+    }
+
+    function drawRisk() {
+      drawWatch();
+      drawFlagChips();
+      if (failed('backlog', 'stale', 'risk')) { const tb = $('#risk-table tbody'); const tr = el('tr'); const td = el('td'); td.colSpan = 7; td.append(el('div', 'sp-fail', 'Failed to load')); tr.append(td); tb.replaceChildren(tr); }
+      drawRiskTable();
+      const sum = ok('risk_summary') ? ds('risk_summary').data[0] : null;
+      for (const k of document.querySelectorAll('#risk-kpis .sp-kpi-value')) {
+        if (sum) { k.classList.remove('dash-skeleton'); k.textContent = String(sum[k.dataset.field]); }
+        else if (failed('risk_summary', 'backlog', 'stale')) { k.classList.remove('dash-skeleton'); k.textContent = '—'; }
+      }
+    }
+
+    /* ---------- header ---------- */
+    function drawHeader() {
+      const p = $('#takeaway');
+      const badge = $('#tab-risk-badge');
+      const sum = ok('risk_summary') ? ds('risk_summary').data[0] : null;
+      badge.hidden = !sum || !sum.intervene;
+      if (sum) badge.textContent = String(sum.intervene);
+      if (!ok('sprints') || !ds('sprints').data.length) {
+        if (failed('sprint_tickets', 'worklogs', 'backlog', 'stale')) { p.classList.remove('dash-skeleton'); p.textContent = 'Some Jira data did not load. Check that Atlassian is connected with access to the megatron site.'; }
+        return;
+      }
+      const sprints = ds('sprints').data;
+      const cur = sprints.find((x) => x.sprint_id === st.sprint) || sprints.find((x) => x.sprint_id === pickDefaultSprint(sprints));
+      const w = 'sprint_id=' + enc(cur.sprint_id);
+      p.classList.remove('dash-skeleton');
+      p.replaceChildren(
+        document.createTextNode(cur.sprint + ' (' + range(cur) + '): '),
+        mark(el('b', null, String(cur.closed)), 'sprints', 'closed', w), document.createTextNode(' of '),
+        mark(el('b', null, String(cur.tickets)), 'sprints', 'tickets', w), document.createTextNode(' tickets closed and '),
+        mark(el('b', null, String(cur.hours)), 'sprints', 'hours', w), document.createTextNode(' hours logged.'),
+      );
+      if (sum) {
+        const n = el('b', null, String(sum.intervene));
+        n.dataset.source = 'risk_summary'; n.dataset.field = 'intervene'; n.dataset.row = '0';
+        p.append(document.createTextNode(' On the backlog, '), n, document.createTextNode(sum.intervene === 1 ? ' ticket needs management action today.' : ' tickets need management action today.'));
+      }
+    }
+
+    function draw() {
+      drawHeader();
+      if (st.tab === 'sprints') drawSprints();
+      else drawRisk();
+    }
+
+    dash.onData(draw);
+    const named = location.hash.slice(1);
+    if (named === 'risk' || named === 'sprints') showTab(named);
+  })();
+</script>
