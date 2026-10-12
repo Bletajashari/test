@@ -1,4 +1,4 @@
-# Sprint Pulse
+# Production Support Delivery Dashboard
 
 Live Jira dashboard for the Prod sprint board (board 1282 on megatron.atlassian.net).
 
