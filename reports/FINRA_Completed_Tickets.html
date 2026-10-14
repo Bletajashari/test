@@ -1,0 +1,207 @@
+<!doctype html><html><head><meta charset="utf-8"><title>FINRA Completed Tickets</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#14213d;--muted:#64748b;--line:#e5e9f0;--bg:#f6f8fb;--card:#fff;--accent:#2b59c3;
+--done:#16a34a;--promo:#7c3aed;--client:#d97706;--rft:#0891b2;--testing:#db2777;--pod:#0f766e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:13px/1.45 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px 32px}
+header{background:linear-gradient(120deg,#14213d 0%,#2b59c3 100%);color:#fff;padding:28px 0 64px}
+header .wrap{padding-bottom:0}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:11px;opacity:.75;font-weight:600}
+h1{margin:6px 0 4px;font-size:28px;font-weight:700}
+.sub{opacity:.85}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:-44px}
+.kpi{background:var(--card);border-radius:12px;padding:16px 18px;box-shadow:0 4px 14px rgba(20,33,61,.08)}
+.kpi .n{font-size:30px;font-weight:700;line-height:1.1}
+.kpi .l{color:var(--muted);font-size:12px;margin-top:2px}
+.kpi.pod .n{color:var(--pod)} .kpi.done .n{color:var(--done)} .kpi.flight .n{color:var(--client)}
+section{background:var(--card);border-radius:12px;padding:20px 22px;margin-top:18px;box-shadow:0 2px 8px rgba(20,33,61,.05);break-inside:auto}
+section.podsec{border-top:5px solid var(--pod)}
+section.othersec{border-top:5px solid var(--accent)}
+h2{margin:0 0 4px;font-size:18px;display:flex;align-items:center;gap:10px}
+h2 .count{background:#eef2ff;color:var(--accent);border-radius:999px;padding:2px 10px;font-size:12px}
+.podsec h2 .count{background:#ccfbf1;color:var(--pod)}
+.desc{color:var(--muted);margin:0 0 14px}
+.bar{display:flex;height:10px;border-radius:999px;overflow:hidden;background:var(--line)}
+.seg{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin:8px 0 14px;color:var(--muted);font-size:12px}
+.legend b{color:var(--ink)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.seg.done,.dot.done{background:var(--done)} .seg.promo,.dot.promo{background:var(--promo)}
+.seg.client,.dot.client{background:var(--client)} .seg.rft,.dot.rft{background:var(--rft)} .seg.testing,.dot.testing{background:var(--testing)}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.chip{display:flex;align-items:center;gap:8px;background:#f0fdfa;border:1px solid #99f6e4;border-radius:999px;padding:4px 12px 4px 4px;font-weight:500}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;padding:8px 10px;border-bottom:2px solid var(--line)}
+td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr{break-inside:avoid}
+tbody tr:nth-child(even){background:#fafbfd}
+.key a{color:var(--accent);font-weight:600;text-decoration:none;white-space:nowrap}
+.sum{max-width:380px}
+.note{font-size:11px;color:var(--client);margin-top:3px;font-style:italic}
+.date{white-space:nowrap;color:var(--muted)}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600;white-space:nowrap}
+.pill.done{background:#dcfce7;color:#166534} .pill.promo{background:#ede9fe;color:#5b21b6}
+.pill.client{background:#fef3c7;color:#92400e} .pill.rft{background:#cffafe;color:#155e75} .pill.testing{background:#fce7f3;color:#9d174d}
+.person{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.person.muted{color:var(--muted);font-style:italic}
+.av{width:24px;height:24px;border-radius:50%;background:#dbe4f5;color:var(--accent);display:inline-grid;place-items:center;font-size:10px;font-weight:700;flex:none}
+.av-pod{background:var(--pod);color:#fff} .av-rep{background:#f1f5f9;color:#475569} .av-none{background:#f1f5f9;color:#94a3b8}
+footer{color:var(--muted);font-size:11px;margin-top:18px;line-height:1.6}
+footer code{background:#eef2f7;padding:1px 5px;border-radius:4px;font-size:10.5px}
+@media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)} table,thead,tbody,tr,td{display:block} thead{display:none} td{border:0;padding:4px 0} tr{border-bottom:1px solid var(--line);padding:10px 0}}
+@page{size:A4 landscape;margin:12mm}
+@media print{body{background:#fff} section{box-shadow:none;border:1px solid var(--line)} .kpi{box-shadow:none;border:1px solid var(--line)}}
+</style></head><body>
+<header><div class="wrap">
+<div class="eyebrow">Client delivery report · Jira (megatron)</div>
+<h1>FINRA — Completed Tickets</h1>
+<div class="sub">Last 60 days · 14 Aug 2026 – 14 Oct 2026 · Statuses: Done, Ready for Test, Needs Client Test, Ready for Promotion, Testing</div>
+</div></header>
+<div class="wrap">
+<div class="kpis">
+<div class="kpi"><div class="n">16</div><div class="l">Total completed tickets</div></div>
+<div class="kpi done"><div class="n">12</div><div class="l">Done</div></div>
+<div class="kpi flight"><div class="n">4</div><div class="l">In test / promotion</div></div>
+<div class="kpi pod"><div class="n">8</div><div class="l">Delivered by Prod Pod</div></div>
+</div>
+
+<section><h2>Status overview</h2><p class="desc">All 16 FINRA tickets by current status.</p><div class="bar"><span class="seg done" style="width:75.00%"></span><span class="seg promo" style="width:6.25%"></span><span class="seg client" style="width:6.25%"></span><span class="seg rft" style="width:12.50%"></span></div><div class="legend"><span class="lg"><i class="dot done"></i>Done <b>12</b></span><span class="lg"><i class="dot promo"></i>Ready for Promotion <b>1</b></span><span class="lg"><i class="dot client"></i>Needs Client Test <b>1</b></span><span class="lg"><i class="dot rft"></i>Ready for Test <b>2</b></span></div></section>
+
+<section class="podsec">
+<h2>Prod Pod <span class="count">8 tickets</span></h2>
+<p class="desc">Tickets assigned to Shibi Ramaiyan or Yetunde Sanusi.</p>
+<div class="chips"><span class="chip"><span class="av av-pod">SR</span>Shibi Ramaiyan · 7</span><span class="chip"><span class="av av-pod">YS</span>Yetunde Sanusi · 1</span></div>
+<div class="bar"><span class="seg done" style="width:62.50%"></span><span class="seg client" style="width:12.50%"></span><span class="seg rft" style="width:25.00%"></span></div><div class="legend"><span class="lg"><i class="dot done"></i>Done <b>5</b></span><span class="lg"><i class="dot client"></i>Needs Client Test <b>1</b></span><span class="lg"><i class="dot rft"></i>Ready for Test <b>2</b></span></div>
+<table><thead><tr><th>Ticket</th><th>Summary</th><th>Status</th><th>Reporter</th><th>Assignee</th><th>Updated</th></tr></thead>
+<tbody><tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/CR-1274">CR-1274</a></td>
+<td class="sum">FINRA: Supplier Enhancements</td>
+<td><span class="pill done">Done</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person"><span class="av av-pod">YS</span>Yetunde Sanusi</span></td>
+<td class="date">2026-10-07</td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/CR-1310">CR-1310</a></td>
+<td class="sum">FINRA DR Test Attestation Request – Calendar Year 2026</td>
+<td><span class="pill done">Done</span></td>
+<td><span class="person"><span class="av av-rep">NS</span>Neha Sachdeva</span></td>
+<td><span class="person"><span class="av av-pod">SR</span>Shibi Ramaiyan</span></td>
+<td class="date">2026-08-19</td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IP-2790">IP-2790</a></td>
+<td class="sum">FINRA: Unable to process “Cancelled Before Start” on FINRA assignments – system requires Workday-originated action</td>
+<td><span class="pill done">Done</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person"><span class="av av-pod">SR</span>Shibi Ramaiyan</span></td>
+<td class="date">2026-08-19</td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IP-2991">IP-2991</a></td>
+<td class="sum">FINRA: Ryan Waite – No Onboarding Activities Generated</td>
+<td><span class="pill done">Done</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person"><span class="av av-pod">SR</span>Shibi Ramaiyan</span></td>
+<td class="date">2026-08-17</td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IP-3086">IP-3086</a></td>
+<td class="sum">FINRA: Organizational Dashboard Not Displaying Requisition Assignments for Certain Leaders</td>
+<td><span class="pill done">Done</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person"><span class="av av-pod">SR</span>Shibi Ramaiyan</span></td>
+<td class="date">2026-09-09</td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IP-3005">IP-3005</a></td>
+<td class="sum">FINRA: Workday Supplier Contract Amendment Callout Failing Due to Apostrophe Encoding in SOAP XML Payload</td>
+<td><span class="pill client">Needs Client Test</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person"><span class="av av-pod">SR</span>Shibi Ramaiyan</span></td>
+<td class="date">2026-09-09</td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/CR-1072">CR-1072</a></td>
+<td class="sum">FINRA: CR-01 Minor Enhancements</td>
+<td><span class="pill rft">Ready for Test</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person"><span class="av av-pod">SR</span>Shibi Ramaiyan</span></td>
+<td class="date">2026-09-21</td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/CR-1252">CR-1252</a></td>
+<td class="sum">FINRA: Enable Approval via Email for Expenses, Assignment Changes, and Cases</td>
+<td><span class="pill rft">Ready for Test</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person"><span class="av av-pod">SR</span>Shibi Ramaiyan</span></td>
+<td class="date">2026-10-05</td></tr></tbody></table>
+</section>
+
+<section class="othersec">
+<h2>Other FINRA tickets <span class="count">8 tickets</span></h2>
+<p class="desc">All remaining FINRA tickets, including unassigned ones.</p>
+<div class="bar"><span class="seg done" style="width:87.50%"></span><span class="seg promo" style="width:12.50%"></span></div><div class="legend"><span class="lg"><i class="dot done"></i>Done <b>7</b></span><span class="lg"><i class="dot promo"></i>Ready for Promotion <b>1</b></span></div>
+<table><thead><tr><th>Ticket</th><th>Summary</th><th>Status</th><th>Reporter</th><th>Assignee</th><th>Updated</th></tr></thead>
+<tbody><tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/CBT-146">CBT-146</a></td>
+<td class="sum">FINRA: ETL test sandbox, integration user and test data</td>
+<td><span class="pill done">Done</span></td>
+<td><span class="person"><span class="av av-rep">M</span>mohsinb</span></td>
+<td><span class="person"><span class="av ">CP</span>Chetan Pradhan</span></td>
+<td class="date">2026-10-06</td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/CR-1428">CR-1428</a></td>
+<td class="sum">FINRA: Investigate Workday Allocation Resend Errors and Worker/Contract ID Mismatches</td>
+<td><span class="pill done">Done</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2026-10-02</td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IP-3125">IP-3125</a></td>
+<td class="sum">FINRA: Rehire Process Issues &amp; Current Rehire Remediation</td>
+<td><span class="pill done">Done</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person"><span class="av ">TC</span>Timothy Chiang</span></td>
+<td class="date">2026-09-09</td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IP-3152">IP-3152</a></td>
+<td class="sum">FINRA: Re-Hire Issue – Incorrect Applicant ID Created Wrong Contingent Worker Profile</td>
+<td><span class="pill done">Done</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person"><span class="av ">TC</span>Timothy Chiang</span></td>
+<td class="date">2026-09-18</td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IP-3167">IP-3167</a></td>
+<td class="sum">FINRA: Re-Hire Process Failed Due to Incorrect Applicant/Workday ID</td>
+<td><span class="pill done">Done</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person"><span class="av ">TC</span>Timothy Chiang</span></td>
+<td class="date">2026-09-25</td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IP-3180">IP-3180</a></td>
+<td class="sum">FINRA: Manager Portal Displaying Other Managers&#x27; Pending Approvals</td>
+<td><span class="pill done">Done</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person"><span class="av ">CP</span>Chetan Pradhan</span></td>
+<td class="date">2026-10-08</td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-33917">MEG-33917</a></td>
+<td class="sum">Block – Add mandatory “Will this job support Finra projects?” Yes/No field to Magnit section<div class="note">Likely a Block client ticket that references FINRA projects</div></td>
+<td><span class="pill done">Done</span></td>
+<td><span class="person"><span class="av av-rep">SG</span>Sarah Greenwood</span></td>
+<td><span class="person"><span class="av ">DR</span>Daniel Richards</span></td>
+<td class="date">2026-10-07</td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IP-3190">IP-3190</a></td>
+<td class="sum">Managers can see timesheets pending approval for other managers – related to IP-3180<div class="note">Client field = FINRA</div></td>
+<td><span class="pill promo">Ready for Promotion</span></td>
+<td><span class="person"><span class="av av-rep">NS</span>Neha Sachdeva</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2026-10-08</td></tr></tbody></table>
+</section>
+
+<footer>
+<b>Methodology.</b> A ticket is included if its Client field is FINRA or its summary contains “FINRA”, it is currently in Done, Ready for Test, Needs Client Test, Ready for Promotion or Testing, and its status changed in the last 60 days.
+A second check of the Organizations field and full ticket text found no further tickets.
+“Updated” is the ticket's last-updated date in Jira. MEG-33917 is flagged as borderline; excluding it gives 15 tickets.<br>
+JQL: <code>(cf[10094] = "FINRA" OR summary ~ "FINRA") AND status in ("Done","Ready for Test","Needs Client Test","Ready for Promotion","Testing") AND status changed during (-60d, now())</code><br>
+Generated 14 Oct 2026.
+</footer>
+</div></body></html>
