@@ -55,9 +55,9 @@ tfoot td{border-top:2px solid var(--ink);border-bottom:0;font-weight:700;padding
 .av-pod{background:var(--pod);color:#fff} .av-rep{background:#f1f5f9;color:#475569} .av-none{background:#f1f5f9;color:#94a3b8}
 footer{color:var(--muted);font-size:11px;margin-top:18px;line-height:1.6}
 footer code{background:#eef2f7;padding:1px 5px;border-radius:4px;font-size:10.5px}
-@media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)} tfoot td[colspan]{display:inline} table,thead,tbody,tr,td{display:block} thead{display:none} td{border:0;padding:4px 0} tr{border-bottom:1px solid var(--line);padding:10px 0}}
+@media screen and (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)} tfoot td[colspan]{display:inline} table,thead,tbody,tr,td{display:block} thead{display:none} td{border:0;padding:4px 0} tr{border-bottom:1px solid var(--line);padding:10px 0}}
 @page{size:A4 landscape;margin:12mm}
-@media print{body{background:#fff} section{box-shadow:none;border:1px solid var(--line)} .kpi{box-shadow:none;border:1px solid var(--line)}}
+@media print{tfoot{display:table-row-group} td.sum{min-width:300px} .wrap{max-width:none} body{zoom:.85} body{background:#fff} section{box-shadow:none;border:1px solid var(--line)} .kpi{box-shadow:none;border:1px solid var(--line)}}
 </style></head><body>
 <header><div class="wrap">
 <div class="eyebrow">Client delivery report · Jira (megatron)</div>

@@ -3,7 +3,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#14213d;--muted:#64748b;--line:#e5e9f0;--bg:#f6f8fb;--card:#fff;--accent:#2b59c3;
---prog:#2563eb;--analysis:#d97706;--client:#b45309;--pod:#0f766e}
+--prog:#2563eb;--analysis:#d97706;--todo:#64748b;--client:#b45309;--pod:#0f766e}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:13px/1.45 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .wrap{max-width:1100px;margin:0 auto;padding:0 16px 32px}
@@ -12,11 +12,11 @@ header .wrap{padding-bottom:0}
 .eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:11px;opacity:.75;font-weight:600}
 h1{margin:6px 0 4px;font-size:28px;font-weight:700}
 .sub{opacity:.85}
-.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:-44px}
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:-44px}
 .kpi{background:var(--card);border-radius:12px;padding:16px 18px;box-shadow:0 4px 14px rgba(20,33,61,.08)}
 .kpi .n{font-size:30px;font-weight:700;line-height:1.1}
 .kpi .l{color:var(--muted);font-size:12px;margin-top:2px}
-.kpi.pod .n{color:var(--pod)} .kpi.prog .n{color:var(--prog)} .kpi.analysis .n{color:var(--analysis)}
+.kpi.pod .n{color:var(--pod)} .kpi.prog .n{color:var(--prog)} .kpi.analysis .n{color:var(--analysis)} .kpi.todo .n{color:var(--todo)}
 section{background:var(--card);border-radius:12px;padding:20px 22px;margin-top:18px;box-shadow:0 2px 8px rgba(20,33,61,.05);break-inside:auto}
 section.podsec{border-top:5px solid var(--pod)}
 section.othersec{border-top:5px solid var(--accent)}
@@ -29,7 +29,7 @@ h2 .count{background:#eef2ff;color:var(--accent);border-radius:999px;padding:2px
 .legend{display:flex;flex-wrap:wrap;gap:14px;margin:8px 0 14px;color:var(--muted);font-size:12px}
 .legend b{color:var(--ink)}
 .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
-.seg.prog,.dot.prog{background:var(--prog)} .seg.analysis,.dot.analysis{background:var(--analysis)}
+.seg.prog,.dot.prog{background:var(--prog)} .seg.analysis,.dot.analysis{background:var(--analysis)} .seg.todo,.dot.todo{background:var(--todo)}
 .chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
 .chip{display:flex;align-items:center;gap:8px;background:#f0fdfa;border:1px solid #99f6e4;border-radius:999px;padding:4px 12px 4px 4px;font-weight:500}
 table{width:100%;border-collapse:collapse}
@@ -46,38 +46,39 @@ tbody tr:nth-child(even){background:#fafbfd}
 tfoot td{border-top:2px solid var(--ink);border-bottom:0;font-weight:700;padding-top:10px}
 .kpi.hours .n{color:#7c3aed}
 .pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600;white-space:nowrap}
-.pill.prog{background:#dbeafe;color:#1e40af} .pill.analysis{background:#fef3c7;color:#92400e}
+.pill.prog{background:#dbeafe;color:#1e40af} .pill.analysis{background:#fef3c7;color:#92400e} .pill.todo{background:#f1f5f9;color:#475569}
 .person{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
 .person.muted{color:var(--muted);font-style:italic}
 .av{width:24px;height:24px;border-radius:50%;background:#dbe4f5;color:var(--accent);display:inline-grid;place-items:center;font-size:10px;font-weight:700;flex:none}
 .av-pod{background:var(--pod);color:#fff} .av-rep{background:#f1f5f9;color:#475569} .av-none{background:#f1f5f9;color:#94a3b8}
 footer{color:var(--muted);font-size:11px;margin-top:18px;line-height:1.6}
 footer code{background:#eef2f7;padding:1px 5px;border-radius:4px;font-size:10.5px}
-@media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)} tfoot td[colspan]{display:inline} table,thead,tbody,tr,td{display:block} thead{display:none} td{border:0;padding:4px 0} tr{border-bottom:1px solid var(--line);padding:10px 0}}
+@media screen and (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)} tfoot td[colspan]{display:inline} table,thead,tbody,tr,td{display:block} thead{display:none} td{border:0;padding:4px 0} tr{border-bottom:1px solid var(--line);padding:10px 0}}
 @page{size:A4 landscape;margin:12mm}
-@media print{body{background:#fff} section{box-shadow:none;border:1px solid var(--line)} .kpi{box-shadow:none;border:1px solid var(--line)}}
+@media print{tfoot{display:table-row-group} td.sum{min-width:300px} .wrap{max-width:none} body{zoom:.85} body{background:#fff} section{box-shadow:none;border:1px solid var(--line)} .kpi{box-shadow:none;border:1px solid var(--line)}}
 </style></head><body>
 <header><div class="wrap">
 <div class="eyebrow">Client delivery report · Jira (megatron)</div>
 <h1>FINRA — Open Work</h1>
-<div class="sub">As of 14 Oct 2026 · Statuses: In Progress, Needs Analysis</div>
+<div class="sub">As of 14 Oct 2026 · Statuses: In Progress, Needs Analysis, To Do</div>
 </div></header>
 <div class="wrap">
 <div class="kpis">
-<div class="kpi"><div class="n">16</div><div class="l">Open FINRA tickets</div></div>
-<div class="kpi prog"><div class="n">12</div><div class="l">In Progress</div></div>
-<div class="kpi analysis"><div class="n">4</div><div class="l">Needs Analysis</div></div>
-<div class="kpi pod"><div class="n">1</div><div class="l">Prod Pod</div></div>
-<div class="kpi hours"><div class="n">40.0</div><div class="l">Hours logged</div></div>
+<div class="kpi"><div class="n">131</div><div class="l">Open FINRA tickets</div></div>
+<div class="kpi prog"><div class="n">19</div><div class="l">In Progress</div></div>
+<div class="kpi analysis"><div class="n">6</div><div class="l">Needs Analysis</div></div>
+<div class="kpi todo"><div class="n">106</div><div class="l">To Do</div></div>
+<div class="kpi pod"><div class="n">2</div><div class="l">Prod Pod</div></div>
+<div class="kpi hours"><div class="n">52.0</div><div class="l">Hours logged</div></div>
 </div>
 
-<section><h2>Status overview</h2><p class="desc">All 16 open FINRA tickets by current status. 15 of them have had no update in over 90 days.</p><div class="bar"><span class="seg prog" style="width:75.00%"></span><span class="seg analysis" style="width:25.00%"></span></div><div class="legend"><span class="lg"><i class="dot prog"></i>In Progress <b>12</b></span><span class="lg"><i class="dot analysis"></i>Needs Analysis <b>4</b></span></div></section>
+<section><h2>Status overview</h2><p class="desc">All 131 open FINRA tickets by current status. 123 of them have had no update in over 90 days.</p><div class="bar"><span class="seg prog" style="width:14.50%"></span><span class="seg analysis" style="width:4.58%"></span><span class="seg todo" style="width:80.92%"></span></div><div class="legend"><span class="lg"><i class="dot prog"></i>In Progress <b>19</b></span><span class="lg"><i class="dot analysis"></i>Needs Analysis <b>6</b></span><span class="lg"><i class="dot todo"></i>To Do <b>106</b></span></div></section>
 
 <section class="podsec">
-<h2>Prod Pod <span class="count">1 ticket · 0.0 h</span></h2>
+<h2>Prod Pod <span class="count">2 tickets · 4.0 h</span></h2>
 <p class="desc">Tickets assigned to Shibi Ramaiyan or Yetunde Sanusi.</p>
-<div class="chips"><span class="chip"><span class="av av-pod">SR</span>Shibi Ramaiyan · 1</span></div>
-<div class="bar"><span class="seg analysis" style="width:100.00%"></span></div><div class="legend"><span class="lg"><i class="dot analysis"></i>Needs Analysis <b>1</b></span></div>
+<div class="chips"><span class="chip"><span class="av av-pod">SR</span>Shibi Ramaiyan · 2</span></div>
+<div class="bar"><span class="seg analysis" style="width:50.00%"></span><span class="seg todo" style="width:50.00%"></span></div><div class="legend"><span class="lg"><i class="dot analysis"></i>Needs Analysis <b>1</b></span><span class="lg"><i class="dot todo"></i>To Do <b>1</b></span></div>
 <table><thead><tr><th>Ticket</th><th>Summary</th><th>Status</th><th>Reporter</th><th>Assignee</th><th>Updated</th><th class="hrs">Hours logged</th></tr></thead>
 <tbody><tr>
 <td class="key"><a href="https://megatron.atlassian.net/browse/IP-3012">IP-3012</a></td>
@@ -86,13 +87,21 @@ footer code{background:#eef2f7;padding:1px 5px;border-radius:4px;font-size:10.5p
 <td><span class="person"><span class="av av-rep">SR</span>Shibi Ramaiyan</span></td>
 <td><span class="person"><span class="av av-pod">SR</span>Shibi Ramaiyan</span></td>
 <td class="date">2026-10-13</td>
-<td class="hrs"><span class="none">0 h</span></td></tr></tbody><tfoot><tr><td colspan="6">Total hours logged</td><td class="hrs"><span class="none">0 h</span></td></tr></tfoot></table>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IP-2856">IP-2856</a></td>
+<td class="sum">FINRA: Financial Approver Visibility</td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person"><span class="av av-pod">SR</span>Shibi Ramaiyan</span></td>
+<td class="date">2026-10-14</td>
+<td class="hrs">4 h</td></tr></tbody><tfoot><tr><td colspan="6">Total hours logged</td><td class="hrs">4 h</td></tr></tfoot></table>
 </section>
 
 <section class="othersec">
-<h2>Other FINRA tickets <span class="count">15 tickets · 40.0 h</span></h2>
+<h2>Other FINRA tickets <span class="count">129 tickets · 48.0 h</span></h2>
 <p class="desc">All remaining open FINRA tickets, including unassigned ones. Sorted by status.</p>
-<div class="bar"><span class="seg prog" style="width:80.00%"></span><span class="seg analysis" style="width:20.00%"></span></div><div class="legend"><span class="lg"><i class="dot prog"></i>In Progress <b>12</b></span><span class="lg"><i class="dot analysis"></i>Needs Analysis <b>3</b></span></div>
+<div class="bar"><span class="seg prog" style="width:14.73%"></span><span class="seg analysis" style="width:3.88%"></span><span class="seg todo" style="width:81.40%"></span></div><div class="legend"><span class="lg"><i class="dot prog"></i>In Progress <b>19</b></span><span class="lg"><i class="dot analysis"></i>Needs Analysis <b>5</b></span><span class="lg"><i class="dot todo"></i>To Do <b>105</b></span></div>
 <table><thead><tr><th>Ticket</th><th>Summary</th><th>Status</th><th>Reporter</th><th>Assignee</th><th>Updated</th><th class="hrs">Hours logged</th></tr></thead>
 <tbody><tr>
 <td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18805">MEG-18805</a></td>
@@ -127,6 +136,62 @@ footer code{background:#eef2f7;padding:1px 5px;border-radius:4px;font-size:10.5p
 <td class="date">2025-05-14</td>
 <td class="hrs"><span class="none">0 h</span></td></tr>
 <tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19851">MEG-19851</a></td>
+<td class="sum">PH-To Test Auto-calculate OT rates on Engagement Assignment and on Convert to Engagement<div class="note">QA test · Under MEG-20726 FIN-QA Testing · No update in 317 days</div></td>
+<td><span class="pill prog">In Progress</span></td>
+<td><span class="person"><span class="av av-rep">SD</span>Suman Dsa</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19852">MEG-19852</a></td>
+<td class="sum">PH- To Test if Users are prevented from cloning Vendor Sourced Or Payroll, Engagement Assignments<div class="note">QA test · Under MEG-20726 FIN-QA Testing · No update in 317 days</div></td>
+<td><span class="pill prog">In Progress</span></td>
+<td><span class="person"><span class="av av-rep">SD</span>Suman Dsa</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19853">MEG-19853</a></td>
+<td class="sum">PH- To Test view/edit access of users (VMO MSP, HM and Suppliers) on Rate object on assignment<div class="note">QA test · Under MEG-20726 FIN-QA Testing · No update in 317 days</div></td>
+<td><span class="pill prog">In Progress</span></td>
+<td><span class="person"><span class="av av-rep">SD</span>Suman Dsa</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19938">MEG-19938</a></td>
+<td class="sum">ASSUMPTION - Master Data Files sync&#x27;ing daily<div class="note">Under MEG-18947 FIN - PROD Cutover Activities · No update in 461 days</div></td>
+<td><span class="pill prog">In Progress</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person"><span class="av ">BJ</span>Bleta Jashari</span></td>
+<td class="date">2025-07-10</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20014">MEG-20014</a></td>
+<td class="sum">To test Clone Engagement Assignment - HeadCount Assignments<div class="note">QA test · Under MEG-20726 FIN-QA Testing · No update in 317 days</div></td>
+<td><span class="pill prog">In Progress</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20019">MEG-20019</a></td>
+<td class="sum">To test Clone Engagement Assignment  -  Clone Assignments<div class="note">QA test · Under MEG-20726 FIN-QA Testing · No update in 315 days</div></td>
+<td><span class="pill prog">In Progress</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-03</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20027">MEG-20027</a></td>
+<td class="sum">To test Create Rate and Set Rate as Primary rate.<div class="note">QA test · Under MEG-20726 FIN-QA Testing · No update in 317 days</div></td>
+<td><span class="pill prog">In Progress</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
 <td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20107">MEG-20107</a></td>
 <td class="sum">FIN - Setup DevOps Pipeline (to QA/FULL)<div class="note">Hours include child tickets · No update in 558 days</div></td>
 <td><span class="pill prog">In Progress</span></td>
@@ -136,7 +201,7 @@ footer code{background:#eef2f7;padding:1px 5px;border-radius:4px;font-size:10.5p
 <td class="hrs">21 h</td></tr>
 <tr>
 <td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20258">MEG-20258</a></td>
-<td class="sum">Provision API Access to Client (FIN - Client Training &amp; Support of API)<div class="note">No update in 558 days</div></td>
+<td class="sum">Provision API Access to Client<div class="note">Under MEG-19265 FIN - Client Training &amp; Support of API · No update in 558 days</div></td>
 <td><span class="pill prog">In Progress</span></td>
 <td><span class="person"><span class="av av-rep">RQ</span>Ryan Quesnel</span></td>
 <td><span class="person"><span class="av ">SS</span>Sanchivan Sivadasan</span></td>
@@ -160,7 +225,7 @@ footer code{background:#eef2f7;padding:1px 5px;border-radius:4px;font-size:10.5p
 <td class="hrs"><span class="none">0 h</span></td></tr>
 <tr>
 <td class="key"><a href="https://megatron.atlassian.net/browse/STAR-1692">STAR-1692</a></td>
-<td class="sum">“Starts” dashboard<div class="note">Subtask of STAR-1688 FINRA Report/Dashboard prep · No update in 485 days</div></td>
+<td class="sum">“Starts” dashboard<div class="note">Under STAR-1688 FINRA Report/Dashboard prep · No update in 485 days</div></td>
 <td><span class="pill prog">In Progress</span></td>
 <td><span class="person"><span class="av av-rep">SR</span>Satwinder Randhawa</span></td>
 <td><span class="person"><span class="av ">SR</span>Satwinder Randhawa</span></td>
@@ -168,7 +233,7 @@ footer code{background:#eef2f7;padding:1px 5px;border-radius:4px;font-size:10.5p
 <td class="hrs"><span class="none">0 h</span></td></tr>
 <tr>
 <td class="key"><a href="https://megatron.atlassian.net/browse/STAR-1693">STAR-1693</a></td>
-<td class="sum">“Ends” dashboard<div class="note">Subtask of STAR-1688 FINRA Report/Dashboard prep · No update in 484 days</div></td>
+<td class="sum">“Ends” dashboard<div class="note">Under STAR-1688 FINRA Report/Dashboard prep · No update in 484 days</div></td>
 <td><span class="pill prog">In Progress</span></td>
 <td><span class="person"><span class="av av-rep">SR</span>Satwinder Randhawa</span></td>
 <td><span class="person"><span class="av ">SR</span>Satwinder Randhawa</span></td>
@@ -176,7 +241,7 @@ footer code{background:#eef2f7;padding:1px 5px;border-radius:4px;font-size:10.5p
 <td class="hrs"><span class="none">0 h</span></td></tr>
 <tr>
 <td class="key"><a href="https://megatron.atlassian.net/browse/STAR-1694">STAR-1694</a></td>
-<td class="sum">Supplier Performance dashboard<div class="note">Subtask of STAR-1688 FINRA Report/Dashboard prep · No update in 485 days</div></td>
+<td class="sum">Supplier Performance dashboard<div class="note">Under STAR-1688 FINRA Report/Dashboard prep · No update in 485 days</div></td>
 <td><span class="pill prog">In Progress</span></td>
 <td><span class="person"><span class="av av-rep">SR</span>Satwinder Randhawa</span></td>
 <td><span class="person"><span class="av ">SR</span>Satwinder Randhawa</span></td>
@@ -184,7 +249,7 @@ footer code{background:#eef2f7;padding:1px 5px;border-radius:4px;font-size:10.5p
 <td class="hrs"><span class="none">0 h</span></td></tr>
 <tr>
 <td class="key"><a href="https://megatron.atlassian.net/browse/STAR-1695">STAR-1695</a></td>
-<td class="sum">Location tracking<div class="note">Subtask of STAR-1688 FINRA Report/Dashboard prep · No update in 491 days</div></td>
+<td class="sum">Location tracking<div class="note">Under STAR-1688 FINRA Report/Dashboard prep · No update in 491 days</div></td>
 <td><span class="pill prog">In Progress</span></td>
 <td><span class="person"><span class="av av-rep">SR</span>Satwinder Randhawa</span></td>
 <td><span class="person"><span class="av ">SR</span>Satwinder Randhawa</span></td>
@@ -213,14 +278,870 @@ footer code{background:#eef2f7;padding:1px 5px;border-radius:4px;font-size:10.5p
 <td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
 <td><span class="person"><span class="av ">MB</span>Mitali Bhavsar</span></td>
 <td class="date">2025-04-16</td>
-<td class="hrs"><span class="none">0 h</span></td></tr></tbody><tfoot><tr><td colspan="6">Total hours logged</td><td class="hrs">40 h</td></tr></tfoot></table>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20025">MEG-20025</a></td>
+<td class="sum">To test Manual Add adjustments.<div class="note">QA test · Under MEG-20726 FIN-QA Testing · No update in 314 days</div></td>
+<td><span class="pill analysis">Needs Analysis</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-04</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20026">MEG-20026</a></td>
+<td class="sum">To test Clone transaction<div class="note">QA test · Under MEG-20726 FIN-QA Testing · No update in 317 days</div></td>
+<td><span class="pill analysis">Needs Analysis</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/CR-1027">CR-1027</a></td>
+<td class="sum">FINRA: Auto‑Populate Offer End Date Based on Offer Start Date<div class="note">No update in 266 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2026-01-21</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/CR-1045">CR-1045</a></td>
+<td class="sum">FINRA: What field is determines the locations on the integration?<div class="note">No update in 232 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2026-02-24</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/CR-1155">CR-1155</a></td>
+<td class="sum">In FINRA Prod, Open Date/Time field is being overwritten when Req Assignment status is changed from Open to Draft/In Review to add new vendors and then changed to Open again<div class="note">No update in 197 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">SR</span>Satwinder Randhawa</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2026-03-31</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/CR-1263">CR-1263</a></td>
+<td class="sum">FINRA: Supplier Attributes Updated to IT Preferred<div class="note">No update in 120 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2026-06-16</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/CR-1268">CR-1268</a></td>
+<td class="sum">FINRA: Central Notification Center (Suppliers &amp; Managers)<div class="note">No update in 120 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2026-06-16</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/CR-1284">CR-1284</a></td>
+<td class="sum">FINRA: Delegation Visibility<div class="note">No update in 112 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2026-06-24</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/CR-1285">CR-1285</a></td>
+<td class="sum">FINRA: PO dates extended via Extension Workflow<div class="note">No update in 112 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2026-06-24</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/CR-1316">CR-1316</a></td>
+<td class="sum">FINRA: Update Case Visibility for HM</td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2026-07-16</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/CR-1338">CR-1338</a></td>
+<td class="sum">FINRA: Jake Galbrith Dashboard Creation Access</td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2026-07-29</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/CR-1381">CR-1381</a></td>
+<td class="sum">FINRA: 1074 Approval Authority – Supervisory Organization Manager Decoupling Review</td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2026-08-26</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/CR-1421">CR-1421</a></td>
+<td class="sum">FINRA: Supplier Task and Approval Notification Enhancements</td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2026-09-30</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/CR-859">CR-859</a></td>
+<td class="sum">FIN - Clean up redundant position fields on the assignment and redundant position records<div class="note">No update in 378 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">TC</span>Timothy Chiang</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-10-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IP-2525">IP-2525</a></td>
+<td class="sum">FINRA: Send to Workday Error Message<div class="note">No update in 182 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2026-04-15</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IP-2879">IP-2879</a></td>
+<td class="sum">FINRA - When they rehire, the wizard creates a duplicate contrator contact<div class="note">No update in 114 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">TC</span>Timothy Chiang</span></td>
+<td><span class="person"><span class="av ">MD</span>Milan Dusara</span></td>
+<td class="date">2026-06-22</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IP-3022">IP-3022</a></td>
+<td class="sum">FINRA: Requisition Filled Email- Sending twice</td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DF</span>Darci Frye</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2026-08-06</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IP-3170">IP-3170</a></td>
+<td class="sum">FIN - Birthdays in dataloaded legacy contractors have the wrong birthdays</td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">TC</span>Timothy Chiang</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2026-09-29</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IR-447">IR-447</a></td>
+<td class="sum">Expense Report Approval Delegation – Handling End of Delegation Period (In-Flight Approvals)<div class="note">No update in 203 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person"><span class="av ">RP</span>Ryo Poc</span></td>
+<td class="date">2026-03-25</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IR-450">IR-450</a></td>
+<td class="sum">FINRA - Callout Record Analysis<div class="note">No update in 449 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MD</span>Milan Dusara</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-07-22</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IR-461">IR-461</a></td>
+<td class="sum">FINRA - Training to Schedule Reports<div class="note">No update in 429 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MD</span>Milan Dusara</span></td>
+<td><span class="person"><span class="av ">CT</span>Corinne Tighe</span></td>
+<td class="date">2025-08-11</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IR-481">IR-481</a></td>
+<td class="sum">FIN - Disabled Before Trigger Flow Analysis and Fix<div class="note">No update in 392 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">TC</span>Timothy Chiang</span></td>
+<td><span class="person"><span class="av ">MC</span>Mansi Chadha</span></td>
+<td class="date">2025-09-17</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IR-493">IR-493</a></td>
+<td class="sum">FIN - Handle outstanding assignments that need to be retriggered<div class="note">No update in 203 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">TC</span>Timothy Chiang</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2026-03-25</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IR-494">IR-494</a></td>
+<td class="sum">FIN - Business to decide if contacts is an issue<div class="note">No update in 203 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">TC</span>Timothy Chiang</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2026-03-25</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IR-495">IR-495</a></td>
+<td class="sum">FIN - Handle outstanding cases that need to be retriggered<div class="note">No update in 203 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">TC</span>Timothy Chiang</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2026-03-25</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IR-496">IR-496</a></td>
+<td class="sum">FIN - Business to decide if rates is an issue<div class="note">No update in 203 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">TC</span>Timothy Chiang</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2026-03-25</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IR-497">IR-497</a></td>
+<td class="sum">FIN - Business to decide if tasks (finger printing) is an issue<div class="note">No update in 203 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">TC</span>Timothy Chiang</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2026-03-25</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IR-812">IR-812</a></td>
+<td class="sum">FINRA - can we please have Inbound Integration Record in Timesheet quick links<div class="note">No update in 187 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">KG</span>Katy Godfrey</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2026-04-10</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18880">MEG-18880</a></td>
+<td class="sum">FIN - Business<div class="note">Epic · No update in 596 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">CT</span>Corinne Tighe</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-02-25</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18920">MEG-18920</a></td>
+<td class="sum">FIN - Configuration<div class="note">Epic · 0.5 h logged across its child tickets (not counted) · No update in 643 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-01-09</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18923">MEG-18923</a></td>
+<td class="sum">FIN - REQ Wizard<div class="note">Epic · 49.75 h logged across its child tickets (not counted) · No update in 590 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-03-03</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18924">MEG-18924</a></td>
+<td class="sum">FIN - Requisitions<div class="note">Epic · 37 h logged across its child tickets (not counted) · No update in 643 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-01-09</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18925">MEG-18925</a></td>
+<td class="sum">FIN - Transactions / Invoicing<div class="note">Epic · 18.5 h logged across its child tickets (not counted) · No update in 643 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-01-09</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18926">MEG-18926</a></td>
+<td class="sum">FIN - Approvals (spend)<div class="note">Epic · 95 h logged across its child tickets (not counted) · No update in 621 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-01-31</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18927">MEG-18927</a></td>
+<td class="sum">FIN - Unit Sheet (VMS)<div class="note">Epic · 4 h logged across its child tickets (not counted) · No update in 643 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-01-09</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18928">MEG-18928</a></td>
+<td class="sum">FIN - Expense<div class="note">Epic · 66.25 h logged across its child tickets (not counted) · No update in 628 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-01-24</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18929">MEG-18929</a></td>
+<td class="sum">FIN - On Boarding / Off boarding<div class="note">Epic · 48.5 h logged across its child tickets (not counted) · No update in 643 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-01-09</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18931">MEG-18931</a></td>
+<td class="sum">FIN - Custom Reports<div class="note">Epic · 0.5 h logged across its child tickets (not counted) · No update in 643 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-01-09</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18932">MEG-18932</a></td>
+<td class="sum">Standard Reports<div class="note">Under MEG-18880 FIN - Business · No update in 587 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person"><span class="av ">JS</span>James Simmons</span></td>
+<td class="date">2025-03-06</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18933">MEG-18933</a></td>
+<td class="sum">Dashboards<div class="note">Under MEG-18880 FIN - Business · No update in 587 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person"><span class="av ">JS</span>James Simmons</span></td>
+<td class="date">2025-03-06</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18934">MEG-18934</a></td>
+<td class="sum">Field Tracking<div class="note">Under MEG-18880 FIN - Business · No update in 587 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person"><span class="av ">JS</span>James Simmons</span></td>
+<td class="date">2025-03-06</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18937">MEG-18937</a></td>
+<td class="sum">FIN - Profile / User Roles<div class="note">Epic · 28 h logged across its child tickets (not counted) · No update in 590 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-03-03</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18938">MEG-18938</a></td>
+<td class="sum">FIN - Submission / Candidate<div class="note">Epic · 189.75 h logged across its child tickets (not counted) · No update in 593 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-02-28</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18939">MEG-18939</a></td>
+<td class="sum">FIN - Engagement Management<div class="note">Epic · 173.25 h logged across its child tickets (not counted) · No update in 554 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-04-08</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18941">MEG-18941</a></td>
+<td class="sum">FIN - Integration - Timesheets<div class="note">Epic · 122 h logged across its child tickets (not counted) · No update in 523 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-05-09</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18942">MEG-18942</a></td>
+<td class="sum">FIN - Integration - Master Data (SFTP)<div class="note">Epic · 160 h logged across its child tickets (not counted) · No update in 590 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-03-03</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18943">MEG-18943</a></td>
+<td class="sum">FIN - Integration - New Hire / Rehire - Workday (API)<div class="note">Epic · 98.0333 h logged across its child tickets (not counted) · No update in 621 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-01-31</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18945">MEG-18945</a></td>
+<td class="sum">FIN - Integration - Workday Financials (XML)<div class="note">Epic · 40 h logged across its child tickets (not counted) · No update in 621 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-01-31</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18947">MEG-18947</a></td>
+<td class="sum">FIN - PROD Cutover Activities<div class="note">Epic · 0.5 h logged across its child tickets (not counted) · No update in 546 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-04-16</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18948">MEG-18948</a></td>
+<td class="sum">FIN - Go-Live<div class="note">Epic · 10 h logged across its child tickets (not counted) · No update in 589 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-03-04</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18955">MEG-18955</a></td>
+<td class="sum">Setup MSP User<div class="note">Under MEG-18880 FIN - Business · No update in 587 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person"><span class="av ">JS</span>James Simmons</span></td>
+<td class="date">2025-03-06</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18956">MEG-18956</a></td>
+<td class="sum">Setup Payroll Supplier - Account &amp; Contact<div class="note">Under MEG-18880 FIN - Business · No update in 587 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person"><span class="av ">JS</span>James Simmons</span></td>
+<td class="date">2025-03-06</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19147">MEG-19147</a></td>
+<td class="sum">FIN - Integrations - Other<div class="note">Epic · 61 h logged across its child tickets (not counted) · No update in 596 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-02-25</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19158">MEG-19158</a></td>
+<td class="sum">Setup Holiday Schedule - 2025 and 2026<div class="note">Under MEG-18880 FIN - Business · No update in 587 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person"><span class="av ">JS</span>James Simmons</span></td>
+<td class="date">2025-03-06</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19192">MEG-19192</a></td>
+<td class="sum">FIN - Integration Connectivity<div class="note">Epic · 28 h logged across its child tickets (not counted) · No update in 629 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">RQ</span>Ryan Quesnel</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-01-23</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19200">MEG-19200</a></td>
+<td class="sum">FIN Regression Test<div class="note">QA test set · No update in 317 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19224">MEG-19224</a></td>
+<td class="sum">FIN - Data Migration (load sheets)<div class="note">Epic · No update in 621 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-01-31</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19225">MEG-19225</a></td>
+<td class="sum">Test / UAT Load Sheet<div class="note">Under MEG-19224 FIN - Data Migration (load sheets) · No update in 621 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-01-31</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19226">MEG-19226</a></td>
+<td class="sum">Production Load Sheet<div class="note">Under MEG-19224 FIN - Data Migration (load sheets) · No update in 621 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-01-31</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19263">MEG-19263</a></td>
+<td class="sum">FIN - Integration - Termination and Change HM (API)<div class="note">Epic · 11 h logged across its child tickets (not counted) · No update in 561 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-04-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19299">MEG-19299</a></td>
+<td class="sum">FIN - Integration Workflow Scenarios<div class="note">Epic · 152.333 h logged across its child tickets (not counted) · No update in 593 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">RQ</span>Ryan Quesnel</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-02-28</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19365">MEG-19365</a></td>
+<td class="sum">Email Templates / Triggers<div class="note">Under MEG-18880 FIN - Business · No update in 587 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person"><span class="av ">JS</span>James Simmons</span></td>
+<td class="date">2025-03-06</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19374">MEG-19374</a></td>
+<td class="sum">FIN - Add Interviewer - Whenever new Interview request is created HM should be auto -added to the list of interviewers<div class="note">No update in 419 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person"><span class="av ">RK</span>Rohith Kunnilethu</span></td>
+<td class="date">2025-08-21</td>
+<td class="hrs">8 h</td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19418">MEG-19418</a></td>
+<td class="sum">FIN - Rename MSP everywhere in email templates to VMO (FINRA terminology)<div class="note">No update in 530 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person"><span class="av ">BJ</span>Bleta Jashari</span></td>
+<td class="date">2025-05-02</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19440">MEG-19440</a></td>
+<td class="sum">FIN - Phase 2<div class="note">Epic · No update in 607 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-02-14</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19585">MEG-19585</a></td>
+<td class="sum">FIN - Data Migration / Load Sheets (PROD) - IT Validation<div class="note">No update in 546 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person"><span class="av ">BJ</span>Bleta Jashari</span></td>
+<td class="date">2025-04-16</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19598">MEG-19598</a></td>
+<td class="sum">FIN - Strip off all [x] Deprecated field visibility all users<div class="note">No update in 593 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person"><span class="av ">BJ</span>Bleta Jashari</span></td>
+<td class="date">2025-02-28</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19699">MEG-19699</a></td>
+<td class="sum">FIN - Integration - Worker Updates - Workday (API)<div class="note">Epic · 14 h logged across its child tickets (not counted) · No update in 215 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2026-03-13</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19718">MEG-19718</a></td>
+<td class="sum">FIN - QA/FULL Deployment &amp; Regression Activities<div class="note">Epic · 4 h logged across its child tickets (not counted) · No update in 546 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-04-16</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19856">MEG-19856</a></td>
+<td class="sum">FINAL position list (100% complete)<div class="note">No update in 587 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person"><span class="av ">JS</span>James Simmons</span></td>
+<td class="date">2025-03-06</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19857">MEG-19857</a></td>
+<td class="sum">To Test Spend Approvals on Assignments- End To End (Regular + Etensions)<div class="note">QA test · Under MEG-20726 FIN-QA Testing · No update in 317 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">SD</span>Suman Dsa</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19944">MEG-19944</a></td>
+<td class="sum">FIN - All integration connections / Master Data for PROD<div class="note">No update in 546 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-04-16</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19964">MEG-19964</a></td>
+<td class="sum">FIN - Client Integration Work<div class="note">Epic · No update in 530 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-05-02</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19970">MEG-19970</a></td>
+<td class="sum">FIN - Client must schedule Timesheet 1119 and 1120 files to drop to QA SFTP<div class="note">No update in 518 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person"><span class="av ">BJ</span>Bleta Jashari</span></td>
+<td class="date">2025-05-14</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20087">MEG-20087</a></td>
+<td class="sum">FIN - Setup Dev Environment<div class="note">Epic · 5 h logged across its child tickets (not counted) · No update in 573 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">RQ</span>Ryan Quesnel</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-03-20</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20143">MEG-20143</a></td>
+<td class="sum">FIN - Client to execute / plan for go-live migration (Fieldglass ID&#x27;s - WK and WO)<div class="note">No update in 530 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person"><span class="av ">BJ</span>Bleta Jashari</span></td>
+<td class="date">2025-05-02</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20230">MEG-20230</a></td>
+<td class="sum">Internal - To test Cancel Req- Category Screen<div class="note">QA test · Under MEG-20726 FIN-QA Testing · No update in 317 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20231">MEG-20231</a></td>
+<td class="sum">Internal -To test Cancel Req -Assignment Screen<div class="note">QA test · Under MEG-20726 FIN-QA Testing · No update in 317 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20232">MEG-20232</a></td>
+<td class="sum">Internal- To test Cancel Req -Position Screen<div class="note">QA test · Under MEG-20726 FIN-QA Testing · No update in 317 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20233">MEG-20233</a></td>
+<td class="sum">Internal -To test if Closing Date/time is added to a Requisition with status &quot;Draft&quot;/&quot;In Review&quot; then Requisition status is updated based on inputted Closing Date/time.<div class="note">QA test · Under MEG-20726 FIN-QA Testing · No update in 316 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-02</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20234">MEG-20234</a></td>
+<td class="sum">Internal -To test if Closing Date/time is added to a Requisition with status &quot;Open&quot;  then Requisition status is updated based on inputted Closing Date/time .<div class="note">QA test · Under MEG-20726 FIN-QA Testing · No update in 316 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-02</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20235">MEG-20235</a></td>
+<td class="sum">Internal - To test if Vendor is unable to Create/Submit a Candidate Record when Requisition status is Evaluation, Filled, On Hold or Cancelled<div class="note">QA test · Under MEG-20726 FIN-QA Testing · No update in 316 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-02</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20236">MEG-20236</a></td>
+<td class="sum">Internal - To Test if Vendor is able to withdraw a Candidate and then resubmit the candidate.<div class="note">QA test · Under MEG-20726 FIN-QA Testing · No update in 316 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-02</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20237">MEG-20237</a></td>
+<td class="sum">Internal - To test if Vendor is able to deny an interview request-Place holder<div class="note">QA test · Under MEG-20726 FIN-QA Testing · No update in 317 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20238">MEG-20238</a></td>
+<td class="sum">Internal- To Test validation error message for Req Interview and Make Offer (HM) Button<div class="note">QA test · Under MEG-20726 FIN-QA Testing · No update in 317 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20239">MEG-20239</a></td>
+<td class="sum">Internal - To test if Partial Match is applied when supplier is accepting an offer for a Candidate such that the Candidate&#x27;s  Email ID matches with Existing Contractor Email ID and Candidate ID doesnot match with existing Contractor&#x27;s Candidate ID<div class="note">QA test · Under MEG-20726 FIN-QA Testing · No update in 317 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20240">MEG-20240</a></td>
+<td class="sum">Internal - To test if Partial Match is applied when supplier is accepting an offer for a Candidate such that the Candidate&#x27;s Email ID  doesnot match with Existing Contractor Email ID and Candidate ID matches with existing Contractor&#x27;s Candidate ID<div class="note">QA test · Under MEG-20726 FIN-QA Testing · No update in 315 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-03</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20294">MEG-20294</a></td>
+<td class="sum">FINRA Dev/QA Test Cycle1 April 2025<div class="note">QA test execution · No update in 317 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person"><span class="av ">PS</span>Prabhjot Singh</span></td>
+<td class="date">2025-12-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20318">MEG-20318</a></td>
+<td class="sum">To test Approval Delegations<div class="note">QA test · Under MEG-20726 FIN-QA Testing · No update in 317 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20724">MEG-20724</a></td>
+<td class="sum">FIN Regression Test<div class="note">QA test execution · No update in 317 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person"><span class="av ">MB</span>Mitali Bhavsar</span></td>
+<td class="date">2025-12-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20726">MEG-20726</a></td>
+<td class="sum">FIN-QA Testing<div class="note">Epic · No update in 317 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20812">MEG-20812</a></td>
+<td class="sum">PH - FIN - To test Assignment Expiry Email Notifications<div class="note">QA test · No update in 317 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">SD</span>Suman Dsa</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20813">MEG-20813</a></td>
+<td class="sum">PH - FIN - To test PO Depletion Email notifications<div class="note">QA test · No update in 314 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">SD</span>Suman Dsa</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-04</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20945">MEG-20945</a></td>
+<td class="sum">FIN - SIT Issues<div class="note">Epic · 23.5167 h logged across its child tickets (not counted) · No update in 518 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">RQ</span>Ryan Quesnel</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-05-14</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-21328">MEG-21328</a></td>
+<td class="sum">FIN - Change Request - Invoice Automation<div class="note">No update in 502 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">CT</span>Corinne Tighe</span></td>
+<td><span class="person"><span class="av ">BJ</span>Bleta Jashari</span></td>
+<td class="date">2025-05-30</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-21782">MEG-21782</a></td>
+<td class="sum">(Sample-FINRA Critical and High Risk Test Scenarios Set)<div class="note">QA test set · No update in 484 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">PS</span>Prabhjot Singh</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-06-17</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-21937">MEG-21937</a></td>
+<td class="sum">(Sample)-FIN-Placeholder Test Plan- Short Term<div class="note">QA test plan · No update in 317 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-21938">MEG-21938</a></td>
+<td class="sum">(Sample-FIN-Placeholder Test Execution- Short Term)<div class="note">QA sub test execution · No update in 317 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-21939">MEG-21939</a></td>
+<td class="sum">FIN -Placeholder Test<div class="note">QA test · No update in 488 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-06-13</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-21979">MEG-21979</a></td>
+<td class="sum">FIN - Test Cycle - Training June 2025<div class="note">QA test execution · No update in 317 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">MB</span>Mitali Bhavsar</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-12-01</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-22118">MEG-22118</a></td>
+<td class="sum">FINRA - Bill Rate not exposed to supplier<div class="note">No update in 482 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">CT</span>Corinne Tighe</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-06-19</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-22141">MEG-22141</a></td>
+<td class="sum">FIN-SOW/Headcount Eng-A-New fields are showing on Eng-Assignment<div class="note">No update in 460 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">TV</span>Thiva Varatharajah</span></td>
+<td><span class="person"><span class="av ">TV</span>Thiva Varatharajah</span></td>
+<td class="date">2025-07-11</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-22234">MEG-22234</a></td>
+<td class="sum">FIN - Workday Production Connectivity Test<div class="note">No update in 476 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">RQ</span>Ryan Quesnel</span></td>
+<td><span class="person"><span class="av ">TC</span>Timothy Chiang</span></td>
+<td class="date">2025-06-25</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-22495">MEG-22495</a></td>
+<td class="sum">FIN- Refresh full? Discuss<div class="note">No update in 351 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">BJ</span>Bleta Jashari</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-10-28</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-22540">MEG-22540</a></td>
+<td class="sum">FIN-Eng-Assignment- MSP should be allowed to close all tasks<div class="note">No update in 460 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">TV</span>Thiva Varatharajah</span></td>
+<td><span class="person"><span class="av ">RP</span>Ryo Poc</span></td>
+<td class="date">2025-07-11</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/STAR-1689">STAR-1689</a></td>
+<td class="sum">Functional standard reports and dashboards library with all necessary custom reporting fields<div class="note">Under STAR-1688 FINRA Report/Dashboard prep · No update in 491 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">SR</span>Satwinder Randhawa</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-06-10</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/STAR-1696">STAR-1696</a></td>
+<td class="sum">FINRA specific reporting<div class="note">No update in 491 days</div></td>
+<td><span class="pill todo">To Do</span></td>
+<td><span class="person"><span class="av av-rep">SR</span>Satwinder Randhawa</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-06-10</td>
+<td class="hrs"><span class="none">0 h</span></td></tr></tbody><tfoot><tr><td colspan="6">Total hours logged</td><td class="hrs">48 h</td></tr></tfoot></table>
 </section>
 
 <footer>
-<b>Methodology.</b> A ticket is included if it is currently In Progress or Needs Analysis and its Client field is FINRA, its title contains “FINRA” or the “FIN -” project prefix, or its parent is a FINRA ticket. Titles, descriptions and comments were all searched.
-Not counted: CBT-85, CBT-97 and CBT-137 (ETL 2.0 pilot tickets covering FINRA alongside Rogers and Anaplan, 0 h logged); CR-489 (a DEL ticket) and MEG-33053 (a Block ticket), which only mention FINRA in passing.
-Hours logged is the total time logged on each ticket in Jira, all time, including any child tickets. “Updated” is the ticket's last-updated date in Jira; tickets with no update in over 90 days are flagged.<br>
-JQL: <code>status in ("Needs Analysis","In Progress") AND (cf[10094] = "FINRA" OR text ~ "FINRA" OR summary ~ "FIN" OR parent in (issuesWithText("FINRA")))</code>, then reviewed by hand.<br>
+<b>Methodology.</b> A ticket is included if it is currently In Progress, Needs Analysis or To Do and its Client field is FINRA, its title contains “FINRA” or the “FIN -” project prefix, or its parent is a FINRA or “FIN -” ticket. Titles, descriptions and comments were all searched.
+Not counted: CBT-85, CBT-97 and CBT-137 (ETL 2.0 pilot tickets covering FINRA alongside Rogers and Anaplan) and IR-907 (a reporting issue across 10 clients), all 0 h logged; CR-489 (DEL), MEG-33053, MEG-21407 and MEG-28712 (Block/BMO) and MEG-24951 (a cancelled GBC clone), which only mention FINRA or “FIN” in passing.
+Hours logged is the total time logged on each ticket in Jira, all time, including subtasks. For epics only the epic’s own time counts; hours logged on its child tickets are shown in the notes so nothing is counted twice. “Updated” is the ticket's last-updated date in Jira; tickets with no update in over 90 days are flagged.<br>
+JQL: <code>status in ("Needs Analysis","In Progress","To Do") AND (cf[10094] = "FINRA" OR text ~ "FINRA" OR summary ~ "FIN" OR parent in (issuesWithText("FINRA")))</code>, plus children of the “FIN -” epics, then reviewed by hand.<br>
 Generated 14 Oct 2026.
 </footer>
 </div></body></html>
