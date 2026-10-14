@@ -1,0 +1,226 @@
+<!doctype html><html><head><meta charset="utf-8"><title>FINRA Open Work</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#14213d;--muted:#64748b;--line:#e5e9f0;--bg:#f6f8fb;--card:#fff;--accent:#2b59c3;
+--prog:#2563eb;--analysis:#d97706;--client:#b45309;--pod:#0f766e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:13px/1.45 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px 32px}
+header{background:linear-gradient(120deg,#14213d 0%,#2b59c3 100%);color:#fff;padding:28px 0 64px}
+header .wrap{padding-bottom:0}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:11px;opacity:.75;font-weight:600}
+h1{margin:6px 0 4px;font-size:28px;font-weight:700}
+.sub{opacity:.85}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:-44px}
+.kpi{background:var(--card);border-radius:12px;padding:16px 18px;box-shadow:0 4px 14px rgba(20,33,61,.08)}
+.kpi .n{font-size:30px;font-weight:700;line-height:1.1}
+.kpi .l{color:var(--muted);font-size:12px;margin-top:2px}
+.kpi.pod .n{color:var(--pod)} .kpi.prog .n{color:var(--prog)} .kpi.analysis .n{color:var(--analysis)}
+section{background:var(--card);border-radius:12px;padding:20px 22px;margin-top:18px;box-shadow:0 2px 8px rgba(20,33,61,.05);break-inside:auto}
+section.podsec{border-top:5px solid var(--pod)}
+section.othersec{border-top:5px solid var(--accent)}
+h2{margin:0 0 4px;font-size:18px;display:flex;align-items:center;gap:10px}
+h2 .count{background:#eef2ff;color:var(--accent);border-radius:999px;padding:2px 10px;font-size:12px}
+.podsec h2 .count{background:#ccfbf1;color:var(--pod)}
+.desc{color:var(--muted);margin:0 0 14px}
+.bar{display:flex;height:10px;border-radius:999px;overflow:hidden;background:var(--line)}
+.seg{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin:8px 0 14px;color:var(--muted);font-size:12px}
+.legend b{color:var(--ink)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.seg.prog,.dot.prog{background:var(--prog)} .seg.analysis,.dot.analysis{background:var(--analysis)}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.chip{display:flex;align-items:center;gap:8px;background:#f0fdfa;border:1px solid #99f6e4;border-radius:999px;padding:4px 12px 4px 4px;font-weight:500}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;padding:8px 10px;border-bottom:2px solid var(--line)}
+td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr{break-inside:avoid}
+tbody tr:nth-child(even){background:#fafbfd}
+.key a{color:var(--accent);font-weight:600;text-decoration:none;white-space:nowrap}
+.sum{max-width:380px}
+.note{font-size:11px;color:var(--client);margin-top:3px;font-style:italic}
+.date{white-space:nowrap;color:var(--muted)}
+.hrs{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:600}
+.hrs .none{color:#94a3b8;font-weight:400}
+tfoot td{border-top:2px solid var(--ink);border-bottom:0;font-weight:700;padding-top:10px}
+.kpi.hours .n{color:#7c3aed}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600;white-space:nowrap}
+.pill.prog{background:#dbeafe;color:#1e40af} .pill.analysis{background:#fef3c7;color:#92400e}
+.person{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.person.muted{color:var(--muted);font-style:italic}
+.av{width:24px;height:24px;border-radius:50%;background:#dbe4f5;color:var(--accent);display:inline-grid;place-items:center;font-size:10px;font-weight:700;flex:none}
+.av-pod{background:var(--pod);color:#fff} .av-rep{background:#f1f5f9;color:#475569} .av-none{background:#f1f5f9;color:#94a3b8}
+footer{color:var(--muted);font-size:11px;margin-top:18px;line-height:1.6}
+footer code{background:#eef2f7;padding:1px 5px;border-radius:4px;font-size:10.5px}
+@media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)} tfoot td[colspan]{display:inline} table,thead,tbody,tr,td{display:block} thead{display:none} td{border:0;padding:4px 0} tr{border-bottom:1px solid var(--line);padding:10px 0}}
+@page{size:A4 landscape;margin:12mm}
+@media print{body{background:#fff} section{box-shadow:none;border:1px solid var(--line)} .kpi{box-shadow:none;border:1px solid var(--line)}}
+</style></head><body>
+<header><div class="wrap">
+<div class="eyebrow">Client delivery report · Jira (megatron)</div>
+<h1>FINRA — Open Work</h1>
+<div class="sub">As of 14 Oct 2026 · Statuses: In Progress, Needs Analysis</div>
+</div></header>
+<div class="wrap">
+<div class="kpis">
+<div class="kpi"><div class="n">16</div><div class="l">Open FINRA tickets</div></div>
+<div class="kpi prog"><div class="n">12</div><div class="l">In Progress</div></div>
+<div class="kpi analysis"><div class="n">4</div><div class="l">Needs Analysis</div></div>
+<div class="kpi pod"><div class="n">1</div><div class="l">Prod Pod</div></div>
+<div class="kpi hours"><div class="n">40.0</div><div class="l">Hours logged</div></div>
+</div>
+
+<section><h2>Status overview</h2><p class="desc">All 16 open FINRA tickets by current status. 15 of them have had no update in over 90 days.</p><div class="bar"><span class="seg prog" style="width:75.00%"></span><span class="seg analysis" style="width:25.00%"></span></div><div class="legend"><span class="lg"><i class="dot prog"></i>In Progress <b>12</b></span><span class="lg"><i class="dot analysis"></i>Needs Analysis <b>4</b></span></div></section>
+
+<section class="podsec">
+<h2>Prod Pod <span class="count">1 ticket · 0.0 h</span></h2>
+<p class="desc">Tickets assigned to Shibi Ramaiyan or Yetunde Sanusi.</p>
+<div class="chips"><span class="chip"><span class="av av-pod">SR</span>Shibi Ramaiyan · 1</span></div>
+<div class="bar"><span class="seg analysis" style="width:100.00%"></span></div><div class="legend"><span class="lg"><i class="dot analysis"></i>Needs Analysis <b>1</b></span></div>
+<table><thead><tr><th>Ticket</th><th>Summary</th><th>Status</th><th>Reporter</th><th>Assignee</th><th>Updated</th><th class="hrs">Hours logged</th></tr></thead>
+<tbody><tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IP-3012">IP-3012</a></td>
+<td class="sum">Upgrade the Microsoft Office 365 authentication method for Einstein Activity Capture<div class="note">Multi-client: Client field = Breakthru, FINRA, Anaplan, OPS</div></td>
+<td><span class="pill analysis">Needs Analysis</span></td>
+<td><span class="person"><span class="av av-rep">SR</span>Shibi Ramaiyan</span></td>
+<td><span class="person"><span class="av av-pod">SR</span>Shibi Ramaiyan</span></td>
+<td class="date">2026-10-13</td>
+<td class="hrs"><span class="none">0 h</span></td></tr></tbody><tfoot><tr><td colspan="6">Total hours logged</td><td class="hrs"><span class="none">0 h</span></td></tr></tfoot></table>
+</section>
+
+<section class="othersec">
+<h2>Other FINRA tickets <span class="count">15 tickets · 40.0 h</span></h2>
+<p class="desc">All remaining open FINRA tickets, including unassigned ones. Sorted by status.</p>
+<div class="bar"><span class="seg prog" style="width:80.00%"></span><span class="seg analysis" style="width:20.00%"></span></div><div class="legend"><span class="lg"><i class="dot prog"></i>In Progress <b>12</b></span><span class="lg"><i class="dot analysis"></i>Needs Analysis <b>3</b></span></div>
+<table><thead><tr><th>Ticket</th><th>Summary</th><th>Status</th><th>Reporter</th><th>Assignee</th><th>Updated</th><th class="hrs">Hours logged</th></tr></thead>
+<tbody><tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-18805">MEG-18805</a></td>
+<td class="sum">FIN - Discovery<div class="note">Hours include child tickets · No update in 588 days</div></td>
+<td><span class="pill prog">In Progress</span></td>
+<td><span class="person"><span class="av av-rep">RQ</span>Ryan Quesnel</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-03-05</td>
+<td class="hrs">13 h</td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19584">MEG-19584</a></td>
+<td class="sum">FIN - Data Migration / Load Sheets (PROD) - Business Validation<div class="note">No update in 483 days</div></td>
+<td><span class="pill prog">In Progress</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person"><span class="av ">BJ</span>Bleta Jashari</span></td>
+<td class="date">2025-06-18</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19591">MEG-19591</a></td>
+<td class="sum">FIN - Data Migration / Load Sheets (PROD) - Dev Uploads<div class="note">No update in 533 days</div></td>
+<td><span class="pill prog">In Progress</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person"><span class="av ">DG</span>Dalvinder Grewal</span></td>
+<td class="date">2025-04-29</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19723">MEG-19723</a></td>
+<td class="sum">FIN - SIT &amp; Regression Testing (Test/Staging) - QA<div class="note">No update in 518 days</div></td>
+<td><span class="pill prog">In Progress</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person"><span class="av ">MB</span>Mitali Bhavsar</span></td>
+<td class="date">2025-05-14</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20107">MEG-20107</a></td>
+<td class="sum">FIN - Setup DevOps Pipeline (to QA/FULL)<div class="note">Hours include child tickets · No update in 558 days</div></td>
+<td><span class="pill prog">In Progress</span></td>
+<td><span class="person"><span class="av av-rep">RQ</span>Ryan Quesnel</span></td>
+<td><span class="person"><span class="av ">PV</span>Pavan Vemunuri</span></td>
+<td class="date">2025-04-04</td>
+<td class="hrs">21 h</td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20258">MEG-20258</a></td>
+<td class="sum">Provision API Access to Client (FIN - Client Training &amp; Support of API)<div class="note">No update in 558 days</div></td>
+<td><span class="pill prog">In Progress</span></td>
+<td><span class="person"><span class="av av-rep">RQ</span>Ryan Quesnel</span></td>
+<td><span class="person"><span class="av ">SS</span>Sanchivan Sivadasan</span></td>
+<td class="date">2025-04-04</td>
+<td class="hrs">5 h</td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-20651">MEG-20651</a></td>
+<td class="sum">FIN - Integration Connectivity Instructions<div class="note">No update in 512 days</div></td>
+<td><span class="pill prog">In Progress</span></td>
+<td><span class="person"><span class="av av-rep">TC</span>Timothy Chiang</span></td>
+<td><span class="person"><span class="av ">TC</span>Timothy Chiang</span></td>
+<td class="date">2025-05-20</td>
+<td class="hrs">1 h</td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/STAR-1688">STAR-1688</a></td>
+<td class="sum">FINRA Report/Dashboard prep<div class="note">No update in 468 days</div></td>
+<td><span class="pill prog">In Progress</span></td>
+<td><span class="person"><span class="av av-rep">BB</span>Beth Bruder</span></td>
+<td><span class="person"><span class="av ">SR</span>Satwinder Randhawa</span></td>
+<td class="date">2025-07-03</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/STAR-1692">STAR-1692</a></td>
+<td class="sum">“Starts” dashboard<div class="note">Subtask of STAR-1688 FINRA Report/Dashboard prep · No update in 485 days</div></td>
+<td><span class="pill prog">In Progress</span></td>
+<td><span class="person"><span class="av av-rep">SR</span>Satwinder Randhawa</span></td>
+<td><span class="person"><span class="av ">SR</span>Satwinder Randhawa</span></td>
+<td class="date">2025-06-16</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/STAR-1693">STAR-1693</a></td>
+<td class="sum">“Ends” dashboard<div class="note">Subtask of STAR-1688 FINRA Report/Dashboard prep · No update in 484 days</div></td>
+<td><span class="pill prog">In Progress</span></td>
+<td><span class="person"><span class="av av-rep">SR</span>Satwinder Randhawa</span></td>
+<td><span class="person"><span class="av ">SR</span>Satwinder Randhawa</span></td>
+<td class="date">2025-06-17</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/STAR-1694">STAR-1694</a></td>
+<td class="sum">Supplier Performance dashboard<div class="note">Subtask of STAR-1688 FINRA Report/Dashboard prep · No update in 485 days</div></td>
+<td><span class="pill prog">In Progress</span></td>
+<td><span class="person"><span class="av av-rep">SR</span>Satwinder Randhawa</span></td>
+<td><span class="person"><span class="av ">SR</span>Satwinder Randhawa</span></td>
+<td class="date">2025-06-16</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/STAR-1695">STAR-1695</a></td>
+<td class="sum">Location tracking<div class="note">Subtask of STAR-1688 FINRA Report/Dashboard prep · No update in 491 days</div></td>
+<td><span class="pill prog">In Progress</span></td>
+<td><span class="person"><span class="av av-rep">SR</span>Satwinder Randhawa</span></td>
+<td><span class="person"><span class="av ">SR</span>Satwinder Randhawa</span></td>
+<td class="date">2025-06-10</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/IP-1793">IP-1793</a></td>
+<td class="sum">FINRA - Managers receiving Approval Emails even though approval is not in their queue<div class="note">No update in 365 days</div></td>
+<td><span class="pill analysis">Needs Analysis</span></td>
+<td><span class="person"><span class="av av-rep">MD</span>Milan Dusara</span></td>
+<td><span class="person"><span class="av ">AB</span>Abiola Banjoko</span></td>
+<td class="date">2025-10-14</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19721">MEG-19721</a></td>
+<td class="sum">FIN - Deployment from Test/Staging to PROD<div class="note">No update in 546 days</div></td>
+<td><span class="pill analysis">Needs Analysis</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person muted"><span class="av av-none">?</span>Unassigned</span></td>
+<td class="date">2025-04-16</td>
+<td class="hrs"><span class="none">0 h</span></td></tr>
+<tr>
+<td class="key"><a href="https://megatron.atlassian.net/browse/MEG-19724">MEG-19724</a></td>
+<td class="sum">FIN - (Targeted) Regression Testing (PROD)<div class="note">No update in 546 days</div></td>
+<td><span class="pill analysis">Needs Analysis</span></td>
+<td><span class="person"><span class="av av-rep">DK</span>David Kong</span></td>
+<td><span class="person"><span class="av ">MB</span>Mitali Bhavsar</span></td>
+<td class="date">2025-04-16</td>
+<td class="hrs"><span class="none">0 h</span></td></tr></tbody><tfoot><tr><td colspan="6">Total hours logged</td><td class="hrs">40 h</td></tr></tfoot></table>
+</section>
+
+<footer>
+<b>Methodology.</b> A ticket is included if it is currently In Progress or Needs Analysis and its Client field is FINRA, its title contains “FINRA” or the “FIN -” project prefix, or its parent is a FINRA ticket. Titles, descriptions and comments were all searched.
+Not counted: CBT-85, CBT-97 and CBT-137 (ETL 2.0 pilot tickets covering FINRA alongside Rogers and Anaplan, 0 h logged); CR-489 (a DEL ticket) and MEG-33053 (a Block ticket), which only mention FINRA in passing.
+Hours logged is the total time logged on each ticket in Jira, all time, including any child tickets. “Updated” is the ticket's last-updated date in Jira; tickets with no update in over 90 days are flagged.<br>
+JQL: <code>status in ("Needs Analysis","In Progress") AND (cf[10094] = "FINRA" OR text ~ "FINRA" OR summary ~ "FIN" OR parent in (issuesWithText("FINRA")))</code>, then reviewed by hand.<br>
+Generated 14 Oct 2026.
+</footer>
+</div></body></html>
