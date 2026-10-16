@@ -20,6 +20,11 @@ Every viewer's browser queries Jira live through their own claude.ai **Atlassian
 
 The sprint field on this site is `customfield_10021`; tickets are kept when their latest sprint is on board 1282.
 
+## Scope filter
+
+Every query also has `AND assignee CHANGED BY "712020:b4b53adc-bc5e-491e-8cb9-9f4660bce922"` (Bleta Jashari's
+Atlassian account), so only tickets she assigned at some point are shown, whoever is viewing.
+
 ## Definitions
 
 - **Closed** = status is Done, Ready for Test, Ready to Test, Testing, Needs Client Test or Ready for Promotion
