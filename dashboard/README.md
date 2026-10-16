@@ -16,11 +16,14 @@ Every viewer's browser queries Jira live through their own claude.ai **Atlassian
 | `worklogs` | same as above, `worklog` field only |
 | `backlog` | `project in (IP, IR, CR) AND statusCategory != Done` |
 | `stale` | `project in (IP, IR, CR) AND statusCategory != Done AND updated <= -60d` |
+| `excluded` | `project in (IP, IR, CR) AND (summary ~ "AI" OR text ~ "\"Applied Intuition\"")` — keys removed from every tab |
 | `testing` | `project in (IP, IR, CR) AND status in ("Ready for Test", "Ready to Test", "Testing", "Needs Client Test", "Ready for Promotion")` |
 
 The sprint field on this site is `customfield_10021`; tickets are kept when their latest sprint is on board 1282.
 
 ## Definitions
+
+- **Applied Intuition / AI tickets are excluded** everywhere: any ticket whose title contains the word "AI" or whose text mentions "Applied Intuition".
 
 - **Closed** = status is Done, Ready for Test, Ready to Test, Testing, Needs Client Test or Ready for Promotion
   (Cancelled is not counted as closed or open).

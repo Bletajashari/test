@@ -174,7 +174,7 @@
    <div class="sp-hero">
     <div class="sp-titlebar">
       <h1 class="sp-title">Production Support Delivery Dashboard</h1>
-      <span class="sp-scope">Prod board 1282 · IP, IR and CR tickets · live from Jira</span>
+      <span class="sp-scope">Prod board 1282 · IP, IR and CR tickets · Applied Intuition / AI tickets excluded · live from Jira</span>
     </div>
     <p class="sp-takeaway dash-skeleton" id="takeaway">—</p>
    </div>
@@ -525,12 +525,33 @@
     },
   });
 
+  dash.loader('excluded', {
+    description: 'Follows Jira search pages (up to 10) and lists each Applied Intuition / AI ticket key, so the dashboard can leave them out.',
+    fn: async ({ answer, call, args }) => {
+      const parse = (a) => { if (typeof a !== 'string') return a; try { return JSON.parse(a); } catch (e) { throw new Error(a); } };
+      let page = parse(answer);
+      if (!page || !page.issues) throw new Error((page && (page.message || page.error)) || 'Jira did not return an issues list');
+      const nodes = [...(page.issues.nodes || [])];
+      let pages = 1;
+      while (page.issues.pageInfo && page.issues.pageInfo.hasNextPage && pages < 10) {
+        page = parse(await call('searchJiraIssuesUsingJql', { ...args, nextPageToken: page.issues.pageInfo.endCursor }));
+        if (!page || !page.issues) throw new Error((page && (page.message || page.error)) || 'Jira stopped returning pages');
+        nodes.push(...(page.issues.nodes || []));
+        pages += 1;
+      }
+      return { columns: ['key'], rows: nodes.map((n) => ({ key: n.key })), cut: !!(page.issues.pageInfo && page.issues.pageInfo.hasNextPage) };
+    },
+  });
+
   /* ---------- calculations ---------- */
   dash.calc('board_tickets', {
     title: 'Prod board tickets',
-    description: 'Sprint tickets whose latest sprint belongs to board 1282 (the Prod sprints).',
-    inputs: ['sprint_tickets'],
-    fn: (sprint_tickets) => sprint_tickets.filter((t) => t.board_id === 1282),
+    description: 'Sprint tickets whose latest sprint belongs to board 1282 (the Prod sprints), leaving out Applied Intuition / AI tickets.',
+    inputs: ['sprint_tickets', 'excluded'],
+    fn: (sprint_tickets, excluded) => {
+      const skip = new Set(excluded.map((e) => e.key));
+      return sprint_tickets.filter((t) => t.board_id === 1282 && !skip.has(t.key));
+    },
   });
 
   dash.calc('sprints', {
@@ -614,12 +635,13 @@
   dash.calc('risk', {
     title: 'Backlog risk scores',
     description: 'Scores every open ticket not yet in a testing status on staleness, priority, open blockers, financial impact and missing owner; keeps those with any signal.',
-    inputs: ['backlog', 'stale'],
-    fn: (backlog, stale) => {
+    inputs: ['backlog', 'stale', 'excluded'],
+    fn: (backlog, stale, excluded) => {
+      const skip = new Set(excluded.map((e) => e.key));
       const TESTING = ['Ready for Test', 'Ready to Test', 'Testing', 'Needs Client Test', 'Ready for Promotion'];
       const FIN = /invoic|billing|\bbill(s|ed)?\b|financ|payment|payroll|revenue|\btax|\bvat\b|credit note|purchase order|\bpo\b|rate card|timesheet|accrual|remittance|funding/i;
       const staleKeys = new Set(stale.map((s) => s.key));
-      return backlog.filter((t) => !TESTING.includes(t.status)).map((t) => {
+      return backlog.filter((t) => !TESTING.includes(t.status) && !skip.has(t.key)).map((t) => {
         const isStale = staleKeys.has(t.key);
         const hi = t.priority === 'Highest' ? 3 : t.priority === 'High' ? 2 : 0;
         const blocked = t.blockers > 0 || t.status === 'Blocked';
@@ -645,9 +667,9 @@
   dash.calc('risk_summary', {
     title: 'Backlog risk totals',
     description: 'Open tickets not yet in testing, and how many carry each risk signal.',
-    inputs: ['backlog', 'risk'],
-    fn: (backlog, risk) => [{
-      open: backlog.filter((t) => !['Ready for Test', 'Ready to Test', 'Testing', 'Needs Client Test', 'Ready for Promotion'].includes(t.status)).length,
+    inputs: ['backlog', 'risk', 'excluded'],
+    fn: (backlog, risk, excluded) => [{
+      open: backlog.filter((t) => !['Ready for Test', 'Ready to Test', 'Testing', 'Needs Client Test', 'Ready for Promotion'].includes(t.status) && !excluded.some((e) => e.key === t.key)).length,
       intervene: risk.filter((r) => r.intervene === 'Yes').length,
       stale: risk.filter((r) => r.stale === 'Yes').length,
       high_blocked: risk.filter((r) => r.blocked_hp === 'Yes').length,
@@ -666,13 +688,24 @@
     },
   });
 
+  dash.calc('testing_kept', {
+    title: 'Tickets in testing (excluding AI)',
+    description: 'Tickets waiting in a testing status, leaving out Applied Intuition / AI tickets.',
+    inputs: ['testing', 'excluded'],
+    fn: (testing, excluded) => {
+      const skip = new Set(excluded.map((e) => e.key));
+      return testing.filter((t) => !skip.has(t.key));
+    },
+  });
+
   dash.calc('testing_reporters', {
     title: 'Testing tickets by reporter',
     description: 'Per reporter: tickets waiting in each testing status, and how many have had no update in 60+ days.',
-    inputs: ['testing', 'stale'],
-    fn: (testing, stale) => {
+    inputs: ['testing_kept', 'stale'],
+    fn: (testing_kept, stale) => {
       const staleKeys = new Set(stale.map((s) => s.key));
       const m = new Map();
+      const testing = testing_kept;
       for (const t of testing) {
         const r = m.get(t.reporter) || { reporter: t.reporter, total: 0, ready_for_test: 0, testing: 0, needs_client_test: 0, ready_for_promotion: 0, other: 0, idle60: 0 };
         r.total += 1;
@@ -688,8 +721,9 @@
   dash.calc('testing_status', {
     title: 'Testing tickets by status',
     description: 'How many tickets sit in each testing status right now.',
-    inputs: ['testing'],
-    fn: (testing) => {
+    inputs: ['testing_kept'],
+    fn: (testing_kept) => {
+      const testing = testing_kept;
       const ORDER = ['Ready for Test', 'Ready to Test', 'Testing', 'Needs Client Test', 'Ready for Promotion'];
       const m = new Map();
       for (const t of testing) m.set(t.status, (m.get(t.status) || 0) + 1);
@@ -700,8 +734,9 @@
   dash.calc('testing_total', {
     title: 'Testing totals',
     description: 'Tickets in testing, how many have had no update in 60+ days, and how many reporters they come from.',
-    inputs: ['testing', 'stale'],
-    fn: (testing, stale) => {
+    inputs: ['testing_kept', 'stale'],
+    fn: (testing_kept, stale) => {
+      const testing = testing_kept;
       const staleKeys = new Set(stale.map((s) => s.key));
       return [{ total: testing.length, idle60: testing.filter((t) => staleKeys.has(t.key)).length, reporters: new Set(testing.map((t) => t.reporter)).size }];
     },
@@ -965,7 +1000,7 @@
 
     function drawSprints() {
       const need = ['sprints', 'board_tickets', 'dev_sprint', 'status_counts'];
-      if (failed('sprint_tickets', 'worklogs', ...need)) {
+      if (failed('sprint_tickets', 'worklogs', 'excluded', ...need)) {
         for (const id of ['#sprint-strip', '#closed-chart', '#sprint-kpis']) showFail($(id));
         return;
       }
@@ -1005,7 +1040,7 @@
     function drawWatch() {
       const list = $('#watch-list');
       $('#watch-date').textContent = 'As of ' + d3.utcFormat('%A %b %-d, %Y')(new Date());
-      if (failed('backlog', 'stale', 'risk', 'watchlist')) { list.classList.remove('dash-skeleton'); list.replaceChildren(el('li', 'sp-fail', 'Failed to load')); return; }
+      if (failed('backlog', 'stale', 'excluded', 'risk', 'watchlist')) { list.classList.remove('dash-skeleton'); list.replaceChildren(el('li', 'sp-fail', 'Failed to load')); return; }
       if (!ok('watchlist')) { list.classList.add('dash-skeleton'); return; }
       list.classList.remove('dash-skeleton');
       list.replaceChildren();
@@ -1084,7 +1119,7 @@
       drawWatch();
       drawOwners();
       drawFlagChips();
-      if (failed('backlog', 'stale', 'risk')) { const tb = $('#risk-table tbody'); const tr = el('tr'); const td = el('td'); td.colSpan = 7; td.append(el('div', 'sp-fail', 'Failed to load')); tr.append(td); tb.replaceChildren(tr); }
+      if (failed('backlog', 'stale', 'excluded', 'risk')) { const tb = $('#risk-table tbody'); const tr = el('tr'); const td = el('td'); td.colSpan = 7; td.append(el('div', 'sp-fail', 'Failed to load')); tr.append(td); tb.replaceChildren(tr); }
       drawRiskTable();
       const sum = ok('risk_summary') ? ds('risk_summary').data[0] : null;
       for (const k of document.querySelectorAll('#risk-kpis .sp-kpi-value')) {
@@ -1096,7 +1131,7 @@
     /* ---------- testing tab ---------- */
     function drawTestingKpis() {
       const box = $('#testing-kpis');
-      if (failed('testing', 'stale', 'testing_status', 'testing_total')) { showFail(box); return; }
+      if (failed('testing', 'excluded', 'stale', 'testing_status', 'testing_total')) { showFail(box); return; }
       if (!ok('testing_status', 'testing_total')) { box.classList.add('dash-skeleton'); return; }
       box.classList.remove('dash-skeleton');
       const tot = ds('testing_total').data[0];
@@ -1145,7 +1180,7 @@
     function drawReporterChart() {
       const box = $('#reporter-chart');
       if (box.clientWidth === 0) return;
-      if (failed('testing', 'stale', 'testing_reporters')) { showFail(box); return; }
+      if (failed('testing', 'excluded', 'stale', 'testing_reporters')) { showFail(box); return; }
       if (!ok('testing_reporters')) { box.classList.add('dash-skeleton'); return; }
       box.classList.remove('dash-skeleton');
       box.replaceChildren();
@@ -1211,12 +1246,12 @@
 
     function drawReporters() {
       const list = $('#reporter-list');
-      if (failed('testing', 'stale', 'testing_reporters')) { showFail(list); return; }
-      if (!ok('testing', 'testing_reporters')) { list.classList.add('dash-skeleton'); return; }
+      if (failed('testing', 'excluded', 'stale', 'testing_reporters')) { showFail(list); return; }
+      if (!ok('testing_kept', 'testing_reporters')) { list.classList.add('dash-skeleton'); return; }
       list.classList.remove('dash-skeleton');
       const reps = ds('testing_reporters').data;
       if (!st.repInit) { reps.slice(0, 2).forEach((r) => st.openRep.add(r.reporter)); st.repInit = true; }
-      const tickets = ds('testing').data.filter((t) => !st.tstatus || t.status === st.tstatus);
+      const tickets = ds('testing_kept').data.filter((t) => !st.tstatus || t.status === st.tstatus);
       const byRep = d3.group(tickets, (t) => t.reporter);
       list.replaceChildren();
       let shown = 0;
@@ -1248,7 +1283,7 @@
         const body = el('div', 'sp-rep-body');
         const wrap = el('div', 'sp-tablewrap');
         const table = el('table', 'sp-table');
-        table.dataset.source = 'testing';
+        table.dataset.source = 'testing_kept';
         table.dataset.rowKey = 'key';
         const head = el('tr');
         for (const [f, l, c] of [['key', 'Ticket'], ['summary', 'Summary'], ['status', 'Status'], ['assignee', 'Assignee', 'sp-hide-narrow'], ['priority', 'Priority', 'sp-hide-narrow'], ['updated', 'Last updated']]) {
@@ -1297,7 +1332,7 @@
     function drawOwners() {
       const box = $('#owner-chart');
       if (box.clientWidth === 0) return;
-      if (failed('backlog', 'stale', 'risk')) { showFail(box); return; }
+      if (failed('backlog', 'stale', 'excluded', 'risk')) { showFail(box); return; }
       if (!ok('risk')) { box.classList.add('dash-skeleton'); return; }
       box.classList.remove('dash-skeleton');
       box.replaceChildren();
