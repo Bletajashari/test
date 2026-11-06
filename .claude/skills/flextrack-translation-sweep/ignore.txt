@@ -1,0 +1,13 @@
+# Strings allowed to be identical across languages (one per line).
+# Exact matches are case-insensitive; wrap a line in /.../flags for a regex.
+# Built in already: OK, Flextrack, Email, ID, URL, PDF, CSV, Excel, API, SSO, N/A, Total, Status, Date, Info, Menu, Version
+
+# Product / brand names
+Flextrack VMS
+
+# Codes and units
+/^[A-Z]{3}$/
+/^\d+\s?(h|hrs|min)$/
+
+# Copyright footer
+/^©/
