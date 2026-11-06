@@ -1,0 +1,17 @@
+#,LVL,Process Step,Environment,Status,Targt Date,Owner(s),DPL(s),Commnet
+,Basic,QA Complete,QA,Planned,20-Jun,,,QA Tested before Staging DPL (Rehearsal)
+,Basic,Decision; Refresh Full?,,,,,DPL-1,
+,Basic,Prepare artifacts & plan for Staging,FULL,Planned,20-Jun,,DPL-2,Ensure deployment checklist (DPL) & package/artifacts ready
+,Basic,Review & update plan (FULL),FULL,Planned,21-Jun,,DPL-2,Peer review with IT/CS (Rehearsal)
+,Basic,Deploy to FULL,FULL,Planned,22-Jun,,DPL-2,
+,Basic,Log & Resolve Issues (DPL Issues),FULL,Planned,23-Jun,,DPL-2,Critical Feedback Loop to PROD plan
+,Basic,Review & update plan (PROD),PROD,Planned,24-Jun,,DPL-3,Critical Feedback Loop to PROD plan
+,Basic,Review issues & resolution/mitigation (cross reference),PROD,Planned,25-Jun,,DPL-3,
+,Basic,"Risk Assessment (Go, No-Go, Repeat)",PROD,Planned,26-Jun,,DPL-3,
+,Basic,Deploy to PROD,PROD,,27-Jun,,DPL-3,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
