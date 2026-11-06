@@ -11,8 +11,10 @@ truth for the steps; never drop, reorder or rename them.
 
 ## 1. Gather inputs from the ticket
 
-Read the ticket the user gives (ID, link, or pasted text). If only an ID is
-given and no ticket tool is connected, ask the user to paste the ticket text.
+Read the ticket the user gives (ID, link, or pasted text). For a Jira link or
+key, use the Atlassian connector (`getJiraIssue` with `view: "evidence"`, plus
+`listJiraIssueComments`). If no ticket tool is connected, ask the user to paste
+the ticket text.
 
 | Field | Where to look | If missing |
 | --- | --- | --- |
@@ -51,6 +53,11 @@ full date in the header.
 All rows are Level `Basic`. Status starts at `Planned` for steps 1–9 and
 blank for step 10 (as in the CSV). If DPL-1 is "Yes", insert a
 "Refresh FULL environment" step (FULL, DPL-2) right before Deploy to FULL.
+
+**Already deployed?** If the ticket is Done or has a promotion date in the
+past, use the actual promotion date as D, say in the summary that the plan is a
+retrospective record, mark only steps the ticket proves as `Done` (cite the
+evidence in Comment), and leave the rest blank — never `Planned` for past dates.
 
 ## 3. Gate rules to state in the plan
 
